@@ -8,6 +8,22 @@ ol {
   padding: 0;
 }
 
-input[type=text] {
+li {
+  margin-top: 10px;
+}
+
+input[type="text"] {
   border: none;
+  width: 80%;
+}
+
+details#prior {
+  border-top: 1px solid silver;
+  margin-top: 60px;
+  padding: 20px 80px 20px 10px;
+  display: inline-block;
+}
+
+details > details {
+  margin-left: 20px;
 }
