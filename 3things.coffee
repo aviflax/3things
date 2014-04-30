@@ -3,62 +3,51 @@ input_ids = ['first', 'second', 'third']
 
 to_array = (sequential_thing) -> Array.prototype.slice.call sequential_thing
 
-kill_event = (event) ->
-  event.preventDefault()
-  event.stopPropagation()
+update_input_render_state = (checkbox) ->
+  text_input = checkbox.nextSibling
+  text_input.style.textDecoration = if checkbox.checked then 'line-through' else ''
 
-get_label_for_input_id = (input_id) -> d.getElementById input_id + '_label'
-
-update_input_render_state = (input) ->
-  label = get_label_for_input_id input.id
-  label.style.textDecoration = if input.checked then 'line-through' else ''
-
-handle_input_click = (event) ->
-  update_input_render_state event.target
+handle_checkbox_change = (event) ->
+  checkbox = event.target
+  update_input_render_state checkbox
   save_state()
 
-get_item_state = (input_id) ->
-  input = d.getElementById input_id
-  label = get_label_for_input_id input_id
+get_checkbox = (i) -> d.getElementById input_ids[i] + '_status'
+get_text_input = (i) -> d.getElementById input_ids[i] + '_text'
 
-  checked: input.checked
-  goal: if label.firstChild then label.firstChild.nodeValue else ''
+get_item_state = (i) ->
+  checked: get_checkbox(i).checked
+  text: get_text_input(i).value
 
 save_state = () ->
-  today = (get_item_state id for id in input_ids)
+  today = (get_item_state i for i in [0..2])
   localStorage.setItem 'today', JSON.stringify today
   console.log 'Saved state:', today
 
-render_item = (item, position) ->
-  input_id = input_ids[position]
-  input = d.getElementById input_id
+render_item = (item, i) ->
+  get_text_input(i).value = item.text
 
-  label = get_label_for_input_id input_id
-  if label.firstChild
-    label.firstChild.nodeValue = item.goal
-  else
-    label.appendChild d.createTextNode item.goal
-
-  input.checked = item.checked
-  update_input_render_state input
+  checkbox = get_checkbox i
+  checkbox.checked = item.checked
+  update_input_render_state checkbox
 
 load_state = () ->
   today_json = localStorage.getItem 'today'
   if today_json isnt null
-    today = JSON.parse today_json
-    console.log 'Loaded state', today
-    render_item item, i for item, i in today
+    JSON.parse today_json
   else
     console.log 'State not present in localStorage'
 
+render_state = (state) ->
+  render_item item, i for item, i in state
+
 d.addEventListener 'DOMContentLoaded', ->
-  load_state()
+  render_state load_state()
+  inputs = to_array d.getElementsByTagName 'input'
 
-  get_labels = () -> to_array d.getElementsByTagName 'label'
+  input.addEventListener 'change', save_state for input in inputs
 
-  # Kill click events on labels because otherwise when you click on a label to edit it,
-  # the state of the corresponding checkbox is toggled
-  label.addEventListener 'click', kill_event for label in get_labels()
-
-  label.addEventListener 'blur', save_state for label in get_labels()
-  input.addEventListener 'click', handle_input_click for input in to_array d.getElementsByTagName 'input'
+  # this currently results in save_state being called twice when checkbox state is changed,
+  # apparently because the other event listener/handler causes another change event to be fired
+  # on the text input
+  input.addEventListener 'change', handle_checkbox_change for input in inputs when input.type is 'checkbox'
