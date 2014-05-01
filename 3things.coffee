@@ -24,14 +24,14 @@ get_checkbox = (i) -> d.getElementById input_ids[i] + '_status'
 get_text_input = (i) -> d.getElementById input_ids[i] + '_text'
 get_today_thingset = () -> d.getElementById('today_things')
 
-get_item_state = (i) ->
+get_thing_state = (i) ->
   completed: get_checkbox(i).checked
   date_time_completed: get_checkbox(i).dataset.date_time_completed or null
   text: get_text_input(i).value
 
 save_state = () ->
   current =
-    things: (get_item_state i for i in [0..2])
+    things: (get_thing_state i for i in [0..2])
     date: get_today_thingset().dataset.date
   localStorage.setItem 'current', JSON.stringify current
   console.log 'Saved state:', current
@@ -44,11 +44,11 @@ update_and_save = () ->
   update_today_list_date()
   save_state()
 
-render_item = (item, i) ->
-  get_text_input(i).value = item.text
+render_thing = (thing, i) ->
+  get_text_input(i).value = thing.text
 
   checkbox = get_checkbox i
-  checkbox.checked = item.completed
+  checkbox.checked = thing.completed
   update_input_render_state checkbox
 
 load_state = () ->
@@ -60,7 +60,7 @@ load_state = () ->
 
 render_state = (state) ->
   get_today_thingset().dataset.date = state.date
-  render_item item, i for item, i in state.things
+  render_thing thing, i for thing, i in state.things
 
 d.addEventListener 'DOMContentLoaded', ->
   render_state load_state()
