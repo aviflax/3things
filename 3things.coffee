@@ -20,9 +20,9 @@ get_item_state = (i) ->
   text: get_text_input(i).value
 
 save_state = () ->
-  today = (get_item_state i for i in [0..2])
-  localStorage.setItem 'today', JSON.stringify today
-  console.log 'Saved state:', today
+  current = (get_item_state i for i in [0..2])
+  localStorage.setItem 'current', JSON.stringify current
+  console.log 'Saved state:', current
 
 render_item = (item, i) ->
   get_text_input(i).value = item.text
@@ -32,9 +32,9 @@ render_item = (item, i) ->
   update_input_render_state checkbox
 
 load_state = () ->
-  today_json = localStorage.getItem 'today'
-  if today_json isnt null
-    JSON.parse today_json
+  current_json = localStorage.getItem 'current'
+  if current_json isnt null
+    JSON.parse current_json
   else
     console.log 'State not present in localStorage'
 

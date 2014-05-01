@@ -39,8 +39,8 @@
   };
 
   save_state = function() {
-    var i, today;
-    today = (function() {
+    var current, i;
+    current = (function() {
       var _i, _results;
       _results = [];
       for (i = _i = 0; _i <= 2; i = ++_i) {
@@ -48,8 +48,8 @@
       }
       return _results;
     })();
-    localStorage.setItem('today', JSON.stringify(today));
-    return console.log('Saved state:', today);
+    localStorage.setItem('current', JSON.stringify(current));
+    return console.log('Saved state:', current);
   };
 
   render_item = function(item, i) {
@@ -61,10 +61,10 @@
   };
 
   load_state = function() {
-    var today_json;
-    today_json = localStorage.getItem('today');
-    if (today_json !== null) {
-      return JSON.parse(today_json);
+    var current_json;
+    current_json = localStorage.getItem('current');
+    if (current_json !== null) {
+      return JSON.parse(current_json);
     } else {
       return console.log('State not present in localStorage');
     }
