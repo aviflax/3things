@@ -109,9 +109,11 @@ render_prior_thingset = (thingset) ->
   list.appendChild prior_thing_to_li thing for thing in thingset.things
   prior.insertBefore details, prior.firstChild
 
-render_prior_things = (prior_things) ->
+clear_prior_things = () ->
   details = d.getElementById 'prior'
   details.removeChild child for child in to_array(details.getElementsByTagName('details'))[...-1]
+
+render_prior_things = (prior_things) ->
   render_prior_thingset thingset for thingset in prior_things
 
 d.addEventListener 'DOMContentLoaded', ->
@@ -131,5 +133,6 @@ d.addEventListener 'DOMContentLoaded', ->
   d.getElementById('archive').addEventListener 'click', archive_current_thingset
 
   # Prior state is rendered last because it’s more important to set up interactivity first
+  clear_prior_things()
   prior_state = load_state 'prior'
   render_prior_things prior_state unless prior_state is null
