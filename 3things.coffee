@@ -82,10 +82,10 @@ reset_ui = () ->
   reset_thing i for i in [0..2]
   update_today_list_date()
 
-archive_current_thingset = () ->
+archive_thingset = (thingset) ->
   prior_json = localStorage.getItem 'prior'
   prior = if prior_json isnt null then JSON.parse prior_json else []
-  prior.push get_current_thingset_state()
+  prior.push thingset
   localStorage.setItem 'prior', JSON.stringify prior
   localStorage.removeItem 'current'
   reset_ui()
@@ -116,9 +116,20 @@ clear_prior_things = () ->
 render_prior_things = (prior_things) ->
   render_prior_thingset thingset for thingset in prior_things
 
+is_current_day = (date) ->
+  (new Date()).getDay() is date.getDay()
+
 d.addEventListener 'DOMContentLoaded', ->
   current_state = load_state 'current'
-  render_current_state current_state unless current_state is null
+  if current_state and not is_current_day (new Date(current_state.date))
+    archive_thingset current_state
+  else if current_state
+    render_current_state current_state unless current_state is null
+
+  setInterval (() ->
+    if not is_current_day (new Date(get_today_thingset().dataset.date))
+      archive_thingset get_current_thingset_state()
+  ), 60000
 
   inputs = to_array d.getElementsByTagName 'input'
 
@@ -129,8 +140,6 @@ d.addEventListener 'DOMContentLoaded', ->
   # apparently because the other event listener/handler causes another change event to be fired
   # on the text input
   input.addEventListener 'change', handle_checkbox_change for input in inputs when input.type is 'checkbox'
-
-  d.getElementById('archive').addEventListener 'click', archive_current_thingset
 
   # Prior state is rendered last because it’s more important to set up interactivity first
   clear_prior_things()
