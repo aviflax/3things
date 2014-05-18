@@ -17,6 +17,10 @@ input[type="text"] {
   width: 80%;
 }
 
+.completed {
+  text-decoration: line-through;
+}
+
 details#prior {
   border-top: 1px solid silver;
   margin-top: 60px;

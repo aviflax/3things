@@ -7,7 +7,10 @@ current_iso_date = () -> (new Date()).toISOString()
 
 update_input_render_state = (checkbox) ->
   text_input = checkbox.nextSibling
-  text_input.style.textDecoration = if checkbox.checked then 'line-through' else ''
+  if checkbox.checked
+    text_input.classList.add 'completed'
+  else
+    text_input.classList.remove 'completed'
 
 handle_checkbox_change = (event) ->
   checkbox = event.target
@@ -53,14 +56,17 @@ render_thing = (thing, i) ->
   checkbox.checked = thing.completed
   update_input_render_state checkbox
 
-load_current_state = () ->
-  current_json = localStorage.getItem 'current'
-  if current_json isnt null
-    JSON.parse current_json
+load_state = (which) ->
+  json = localStorage.getItem which
+  if json isnt null
+    state = JSON.parse json
+    console.log 'loaded', which, 'state from localStorage', state
+    state
   else
-    console.log 'Current state not present in localStorage'
+    console.log 'state', which, 'not present in localStorage'
+    null
 
-render_state = (state) ->
+render_current_state = (state) ->
   get_today_thingset().dataset.date = state.date
   render_thing thing, i for thing, i in state.things
 
@@ -86,9 +92,31 @@ archive_current_thingset = () ->
   console.log 'Archived current state'
   console.log 'Archive value is now:', prior
 
+prior_thing_to_li = (thing) ->
+  li = d.createElement 'li'
+  if thing.completed then li.classList.add 'completed'
+  li.appendChild d.createTextNode thing.text
+  li
+
+render_prior_thingset = (thingset) ->
+  prior = d.getElementById 'prior'
+  details = d.createElement 'details'
+  summary = d.createElement 'summary'
+  list = d.createElement 'ul'
+  summary.appendChild d.createTextNode thingset.date
+  details.appendChild summary
+  details.appendChild list
+  list.appendChild prior_thing_to_li thing for thing in thingset.things
+  prior.insertBefore details, prior.firstChild
+
+render_prior_things = (prior_things) ->
+  details = d.getElementById 'prior'
+  details.removeChild child for child in to_array(details.getElementsByTagName('details'))[...-1]
+  render_prior_thingset thingset for thingset in prior_things
+
 d.addEventListener 'DOMContentLoaded', ->
-  current_state = load_current_state()
-  if current_state then render_state current_state
+  current_state = load_state 'current'
+  render_current_state current_state unless current_state is null
 
   inputs = to_array d.getElementsByTagName 'input'
 
@@ -101,3 +129,7 @@ d.addEventListener 'DOMContentLoaded', ->
   input.addEventListener 'change', handle_checkbox_change for input in inputs when input.type is 'checkbox'
 
   d.getElementById('archive').addEventListener 'click', archive_current_thingset
+
+  # Prior state is rendered last because it’s more important to set up interactivity first
+  prior_state = load_state 'prior'
+  render_prior_things prior_state unless prior_state is null
