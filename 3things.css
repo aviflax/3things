@@ -1,6 +1,12 @@
 html, body, input {
   font-family: Palatino;
   font-size: 16pt;
+  text-align: center;
+}
+
+body {
+  display: inline-block;
+  text-align: left;
 }
 
 ol {
@@ -13,8 +19,9 @@ li {
 }
 
 input[type="text"] {
+  text-align: left;
   border: none;
-  width: 80%;
+  width: 36em;
 }
 
 .completed {
