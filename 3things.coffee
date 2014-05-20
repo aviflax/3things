@@ -119,6 +119,11 @@ render_prior_things = (prior_things) ->
 is_current_day = (date) ->
   (new Date()).getDay() is date.getDay()
 
+clear_and_render_prior = () ->
+  clear_prior_things()
+  prior_state = load_state 'prior'
+  render_prior_things prior_state unless prior_state is null
+
 d.addEventListener 'DOMContentLoaded', ->
   current_state = load_state 'current'
   if current_state and not is_current_day (new Date(current_state.date))
@@ -129,6 +134,7 @@ d.addEventListener 'DOMContentLoaded', ->
   setInterval (() ->
     if not is_current_day (new Date(get_today_thingset().dataset.date))
       archive_thingset get_current_thingset_state()
+      clear_and_render_prior()
   ), 60000
 
   inputs = to_array d.getElementsByTagName 'input'
@@ -142,6 +148,4 @@ d.addEventListener 'DOMContentLoaded', ->
   input.addEventListener 'change', handle_checkbox_change for input in inputs when input.type is 'checkbox'
 
   # Prior state is rendered last because it’s more important to set up interactivity first
-  clear_prior_things()
-  prior_state = load_state 'prior'
-  render_prior_things prior_state unless prior_state is null
+  clear_and_render_prior()
