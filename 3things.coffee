@@ -25,7 +25,7 @@ handle_checkbox_change = (event) ->
 
 get_checkbox = (i) -> d.getElementById input_ids[i] + '_status'
 get_text_input = (i) -> d.getElementById input_ids[i] + '_text'
-get_today_thingset = () -> d.getElementById('today_things')
+get_today_thingset = () -> d.getElementById 'today_things'
 
 get_thing_state = (i) ->
   completed: get_checkbox(i).checked
