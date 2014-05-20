@@ -103,7 +103,7 @@ render_prior_thingset = (thingset) ->
   details = d.createElement 'details'
   summary = d.createElement 'summary'
   list = d.createElement 'ul'
-  summary.appendChild d.createTextNode thingset.date
+  summary.appendChild d.createTextNode (new Date(thingset.date)).toDateString()
   details.appendChild summary
   details.appendChild list
   list.appendChild prior_thing_to_li thing for thing in thingset.things
