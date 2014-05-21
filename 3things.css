@@ -40,6 +40,7 @@ input[type="text"] {
   text-align: left;
   border: none;
   width: 90%;
+  font-size: 115%;
 }
 
 .completed {
