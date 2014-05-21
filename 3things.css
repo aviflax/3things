@@ -8,9 +8,15 @@ body {
   display: inline-block;
   text-align: left;
   min-width: 32em;
+  max-width: 40em;
 }
 
-ol {
+p {
+  line-height: 150%;
+  padding: 0 2em;
+}
+
+ol, footer ul {
   list-style: none;
   padding: 0;
 }
@@ -31,11 +37,22 @@ input[type="text"] {
 
 details#prior {
   border-top: 1px solid silver;
-  margin-top: 60px;
+  border-bottom: 1px solid silver;
+  margin: 50px 0 50px 0;
   padding: 20px 80px 20px 10px;
   display: inline-block;
+  width: 100%;
 }
 
 details > details {
   margin-left: 20px;
+}
+
+footer {
+  font-size: 10pt;
+}
+
+footer li {
+  display: inline-block;
+  margin-right: 1em;
 }
