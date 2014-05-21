@@ -111,7 +111,7 @@ render_prior_thingset = (thingset) ->
 
 clear_prior_things = () ->
   details = d.getElementById 'prior'
-  details.removeChild child for child in to_array(details.getElementsByTagName('details'))[...-1]
+  details.removeChild child for child in to_array(details.getElementsByTagName('details'))[...-2]
 
 render_prior_things = (prior_things) ->
   render_prior_thingset thingset for thingset in prior_things
@@ -123,6 +123,12 @@ clear_and_render_prior = () ->
   clear_prior_things()
   prior_state = load_state 'prior'
   render_prior_things prior_state unless prior_state is null
+
+export_prior_things = () ->
+  output = d.getElementById 'export_output'
+  output.removeChild child for child in to_array output.childNodes
+  output.value = localStorage.prior
+  output.select()
 
 d.addEventListener 'DOMContentLoaded', ->
   if localStorage.getItem('warning_dismissed') isnt null
@@ -153,6 +159,8 @@ d.addEventListener 'DOMContentLoaded', ->
   d.getElementById('button_dismiss_warning').addEventListener 'click', () ->
     localStorage.setItem 'warning_dismissed', JSON.stringify true
     d.getElementById('warning').style.display = 'none';
+
+  d.getElementById('button_export').addEventListener 'click', export_prior_things
 
   # Prior state is rendered last because it’s more important to set up interactivity first
   clear_and_render_prior()

@@ -67,3 +67,10 @@ footer li {
   display: inline-block;
   margin-right: 1em;
 }
+
+#export_output {
+  display: block;
+  width: 100%;
+  font-family: monospace;
+  font-size: 10pt;
+}

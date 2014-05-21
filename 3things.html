@@ -18,7 +18,7 @@
         <p>Three Things is a 100% client-side browser-based app; it transfers no data to any servers.</p>
         <p>This means that all your data — all the things you enter — it’s all saved in your Web browser.</p>
         <p>So if your browser gets reset, or if your computer is lost, then all your data is gone.</p>
-        <p>An export feature will be implemented soon, but in the meantime proceed with caution!</p>
+        <p>An export feature exists, but it provides JSON only, which isn’t very easy to work with — so proceed at your own risk!</p>
         <button id="button_dismiss_warning">OK, I get it</button>
       </section>
 
@@ -40,15 +40,23 @@
             <summary>28 April 2014</summary>
             ...
         </details>
+
         <details>
             <summary>27 April 2014</summary>
             ...
         </details>
-        <details>
-            <summary>Export All</summary>
-            {coming soon}
+
+        <details id="export">
+            <summary>Export</summary>
+            <button id="button_export">Export all prior things</button>
+            <textarea id="export_output"></textarea>
         </details>
-      </details>
+
+        <details id="import">
+          <summary>Import</summary>
+          {coming soon}
+        </details>
+    </details>
     </main>
 
     <footer>
