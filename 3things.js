@@ -11,7 +11,7 @@
   };
 
   current_iso_date = function() {
-    return (new Date()).toISOString();
+    return new Date().toISOString();
   };
 
   update_input_render_state = function(checkbox) {
@@ -166,7 +166,7 @@
     details = d.createElement('details');
     summary = d.createElement('summary');
     list = d.createElement('ul');
-    summary.appendChild(d.createTextNode((new Date(thingset.date)).toDateString()));
+    summary.appendChild(d.createTextNode(new Date(thingset.date).toDateString()));
     details.appendChild(summary);
     details.appendChild(list);
     _ref = thingset.things;
@@ -200,7 +200,9 @@
   };
 
   is_current_day = function(date) {
-    return (new Date()).getDay() === date.getDay();
+    var value;
+    value = date instanceof Date ? date : new Date(date);
+    return new Date().getDay() === value.getDay();
   };
 
   clear_and_render_prior = function() {
@@ -230,7 +232,7 @@
       d.getElementById('warning').style.display = 'none';
     }
     current_state = load_state('current');
-    if (current_state && !is_current_day(new Date(current_state.date))) {
+    if (current_state && !is_current_day(current_state.date)) {
       archive_thingset(current_state);
     } else if (current_state) {
       if (current_state !== null) {
@@ -238,7 +240,9 @@
       }
     }
     setInterval((function() {
-      if (!is_current_day(new Date(get_today_thingset().dataset.date))) {
+      var current_thingset_date;
+      current_thingset_date = get_today_thingset().dataset.date;
+      if (current_thingset_date && !is_current_day(current_thingset_date)) {
         archive_thingset(get_current_thingset_state());
         return clear_and_render_prior();
       }

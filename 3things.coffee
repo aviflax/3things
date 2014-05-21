@@ -3,7 +3,7 @@ input_ids = ['first', 'second', 'third']
 
 to_array = (sequential_thing) -> Array.prototype.slice.call sequential_thing
 
-current_iso_date = () -> (new Date()).toISOString()
+current_iso_date = () -> new Date().toISOString()
 
 update_input_render_state = (checkbox) ->
   text_input = checkbox.nextSibling
@@ -103,7 +103,7 @@ render_prior_thingset = (thingset) ->
   details = d.createElement 'details'
   summary = d.createElement 'summary'
   list = d.createElement 'ul'
-  summary.appendChild d.createTextNode (new Date(thingset.date)).toDateString()
+  summary.appendChild d.createTextNode new Date(thingset.date).toDateString()
   details.appendChild summary
   details.appendChild list
   list.appendChild prior_thing_to_li thing for thing in thingset.things
@@ -117,7 +117,8 @@ render_prior_things = (prior_things) ->
   render_prior_thingset thingset for thingset in prior_things
 
 is_current_day = (date) ->
-  (new Date()).getDay() is date.getDay()
+  value = if date instanceof Date then date else new Date date
+  new Date().getDay() == value.getDay()
 
 clear_and_render_prior = () ->
   clear_prior_things()
@@ -132,16 +133,17 @@ export_prior_things = () ->
 
 d.addEventListener 'DOMContentLoaded', ->
   if localStorage.getItem('warning_dismissed') isnt null
-    d.getElementById('warning').style.display = 'none';
+    d.getElementById('warning').style.display = 'none'
 
   current_state = load_state 'current'
-  if current_state and not is_current_day (new Date(current_state.date))
+  if current_state and not is_current_day current_state.date
     archive_thingset current_state
   else if current_state
     render_current_state current_state unless current_state is null
 
   setInterval (() ->
-    if not is_current_day (new Date(get_today_thingset().dataset.date))
+    current_thingset_date = get_today_thingset().dataset.date
+    if current_thingset_date and not is_current_day current_thingset_date
       archive_thingset get_current_thingset_state()
       clear_and_render_prior()
   ), 60000
@@ -158,7 +160,7 @@ d.addEventListener 'DOMContentLoaded', ->
 
   d.getElementById('button_dismiss_warning').addEventListener 'click', () ->
     localStorage.setItem 'warning_dismissed', JSON.stringify true
-    d.getElementById('warning').style.display = 'none';
+    d.getElementById('warning').style.display = 'none'
 
   d.getElementById('button_export').addEventListener 'click', export_prior_things
 
