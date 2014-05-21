@@ -125,6 +125,9 @@ clear_and_render_prior = () ->
   render_prior_things prior_state unless prior_state is null
 
 d.addEventListener 'DOMContentLoaded', ->
+  if localStorage.getItem('warning_dismissed') isnt null
+    d.getElementById('warning').style.display = 'none';
+
   current_state = load_state 'current'
   if current_state and not is_current_day (new Date(current_state.date))
     archive_thingset current_state
@@ -146,6 +149,10 @@ d.addEventListener 'DOMContentLoaded', ->
   # apparently because the other event listener/handler causes another change event to be fired
   # on the text input
   input.addEventListener 'change', handle_checkbox_change for input in inputs when input.type is 'checkbox'
+
+  d.getElementById('button_dismiss_warning').addEventListener 'click', () ->
+    localStorage.setItem 'warning_dismissed', JSON.stringify true
+    d.getElementById('warning').style.display = 'none';
 
   # Prior state is rendered last because it’s more important to set up interactivity first
   clear_and_render_prior()

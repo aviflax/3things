@@ -214,6 +214,9 @@
 
   d.addEventListener('DOMContentLoaded', function() {
     var current_state, input, inputs, _i, _j, _k, _len, _len1, _len2;
+    if (localStorage.getItem('warning_dismissed') !== null) {
+      d.getElementById('warning').style.display = 'none';
+    }
     current_state = load_state('current');
     if (current_state && !is_current_day(new Date(current_state.date))) {
       archive_thingset(current_state);
@@ -245,6 +248,10 @@
         input.addEventListener('change', handle_checkbox_change);
       }
     }
+    d.getElementById('button_dismiss_warning').addEventListener('click', function() {
+      localStorage.setItem('warning_dismissed', JSON.stringify(true));
+      return d.getElementById('warning').style.display = 'none';
+    });
     return clear_and_render_prior();
   });
 

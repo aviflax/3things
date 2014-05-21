@@ -12,33 +12,44 @@
       <h1>Three Things</h1>
     </header>
 
-    <section>
-      <header>
-        <h1>Today’s Things</h1>
-      </header>
+    <main>
+      <section id="warning">
+        <p>Before using Three Things, you should understand where it keeps your data.</p>
+        <p>Three Things is a 100% client-side browser-based app; it transfers no data to any servers.</p>
+        <p>This means that all your data — all the things you enter — it’s all saved in your Web browser.</p>
+        <p>So if your browser gets reset, or if your computer is lost, then all your data is gone.</p>
+        <p>An export feature will be implemented soon, but in the meantime proceed with caution!</p>
+        <button id="button_dismiss_warning">OK, I get it</button>
+      </section>
 
-      <ol id="today_things">
-        <li id="thing_1"><input type="checkbox" id="first_status"><input type="text" id="first_text" placeholder="First Thing"></li>
-        <li id="thing_2"><input type="checkbox" id="second_status"><input type="text" id="second_text" placeholder="Second Thing"></li>
-        <li id="thing_3"><input type="checkbox" id="third_status"><input type="text" id="third_text" placeholder="Third Thing"></li>
-      </ol>
-    </section>
+      <section>
+        <header>
+          <h1>Today’s Things</h1>
+        </header>
 
-    <details id="prior">
-      <summary>Prior Things</summary>
-      <details>
-          <summary>28 April 2014</summary>
-          ...
+        <ol id="today_things">
+          <li id="thing_1"><input type="checkbox" id="first_status"><input type="text" id="first_text" placeholder="First Thing"></li>
+          <li id="thing_2"><input type="checkbox" id="second_status"><input type="text" id="second_text" placeholder="Second Thing"></li>
+          <li id="thing_3"><input type="checkbox" id="third_status"><input type="text" id="third_text" placeholder="Third Thing"></li>
+        </ol>
+      </section>
+
+      <details id="prior">
+        <summary>Prior Things</summary>
+        <details>
+            <summary>28 April 2014</summary>
+            ...
+        </details>
+        <details>
+            <summary>27 April 2014</summary>
+            ...
+        </details>
+        <details>
+            <summary>Export All</summary>
+            {coming soon}
+        </details>
       </details>
-      <details>
-          <summary>27 April 2014</summary>
-          ...
-      </details>
-      <details>
-          <summary>Export All</summary>
-          {coming soon}
-      </details>
-    </details>
+    </main>
 
     <footer>
       <nav>

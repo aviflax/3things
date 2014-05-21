@@ -16,6 +16,17 @@ p {
   padding: 0 2em;
 }
 
+#warning {
+  border: 2px groove red;
+  padding: 1em;
+  border-radius: 20px;
+  margin: 2em 0;
+}
+
+#warning p {
+  padding: 0;
+}
+
 ol, footer ul {
   list-style: none;
   padding: 0;
