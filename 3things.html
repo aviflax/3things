@@ -18,11 +18,11 @@
         <p>Three Things is a 100% client-side browser-based app; it transfers no data to any servers.</p>
         <p>This means that all your data — all the things you enter — it’s all saved in your Web browser.</p>
         <p>So if your browser gets reset, or if your computer is lost, then all your data is gone.</p>
-        <p>An export feature exists, but it provides JSON only, which isn’t very easy to work with — so proceed at your own risk!</p>
+        <p>A backup/export feature exists, but it provides JSON only, which isn’t very easy to work with — so proceed at your own risk!</p>
         <button id="button_dismiss_warning">OK, I get it</button>
       </section>
 
-      <section>
+      <section id="section_today">
         <header>
           <h1>Today’s Things</h1>
         </header>
@@ -34,29 +34,46 @@
         </ol>
       </section>
 
-      <details id="prior">
-        <summary>Prior Things</summary>
-        <details>
-            <summary>28 April 2014</summary>
-            ...
+      <section id="section_prior_import_export">
+        <details id="prior">
+          <summary>Prior Things</summary>
+          <details>
+              <summary>28 April 2014</summary>
+              ...
+          </details>
+
+          <details>
+              <summary>27 April 2014</summary>
+              ...
+          </details>
         </details>
 
         <details>
-            <summary>27 April 2014</summary>
-            ...
-        </details>
+          <summary>Backup/Export/Restore/Import</summary>
+          <details id="export">
+              <summary>Backup/Export</summary>
+              <button id="button_export">Backup/Export Everything</button>
+              <textarea id="export_output" required></textarea>
+          </details>
 
-        <details id="export">
-            <summary>Export</summary>
-            <button id="button_export">Export all prior things</button>
-            <textarea id="export_output"></textarea>
+          <details id="import">
+            <summary>Restore/Import</summary>
+            <label>Paste backup/export data here:
+              <textarea id="import_input" required></textarea>
+            </label>
+            <!--
+            # This is commented out for now because I don’t think I’m up for implementing a merge
+            # right now.
+            <fieldset>
+              <legend>How to handle existing data?</legend>
+              <label><input type="radio" name="existing_data" value="replace"> Replace all existing data</label>
+              <label><input type="radio" name="existing_data" value="merge"> Merge new data with existing data</label>
+            </fieldset>
+            -->
+            <button id="button_import" disabled>Restore/Import Data</button>
+          </details>
         </details>
-
-        <details id="import">
-          <summary>Import</summary>
-          {coming soon}
-        </details>
-    </details>
+      </section>
     </main>
 
     <footer>

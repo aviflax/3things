@@ -107,46 +107,73 @@ render_prior_thingset = (thingset) ->
   details.appendChild summary
   details.appendChild list
   list.appendChild prior_thing_to_li thing for thing in thingset.things
-  prior.insertBefore details, prior.firstChild
+  prior.appendChild details
 
 clear_prior_things = () ->
   details = d.getElementById 'prior'
-  details.removeChild child for child in to_array(details.getElementsByTagName('details'))[...-2]
+  details.removeChild child for child in to_array details.getElementsByTagName 'details'
 
 render_prior_things = (prior_things) ->
-  render_prior_thingset thingset for thingset in prior_things
+  render_prior_thingset thingset for thingset in prior_things.sort (a, b) ->
+    if a.date < b.date then 1 else if a.date > b.date then -1 else 0
 
 is_current_day = (date) ->
   value = if date instanceof Date then date else new Date date
-  new Date().getDay() == value.getDay()
+  new Date().getDay() is value.getDay()
 
-clear_and_render_prior = () ->
+clear_and_render_prior = (prior_state) ->
   clear_prior_things()
-  prior_state = load_state 'prior'
-  render_prior_things prior_state unless prior_state is null
+  render_prior_things prior_state if prior_state
 
-export_prior_things = () ->
+do_export = () ->
   output = d.getElementById 'export_output'
   output.removeChild child for child in to_array output.childNodes
-  output.value = localStorage.prior
+  data =
+    current: load_state 'current'
+    prior: load_state 'prior'
+  output.value = JSON.stringify data
   output.select()
 
+handle_import_click = (event) ->
+  prompt_result = prompt 'This will ERASE all existing data! If you wish to proceed then enter “erase” below.'
+  if prompt_result isnt 'erase' then return
+
+  # TODO: add error handling if, say, the value isn’t valid JSON or is missing
+  # the required keys or if their values are the wrong shape
+  textarea = d.getElementById 'import_input'
+  input = JSON.parse textarea.value
+  localStorage.current = JSON.stringify input.current
+  localStorage.prior = JSON.stringify input.prior
+  render_current_state input.current unless input.current is null
+  clear_and_render_prior input.prior
+  textarea.value = ''
+  event.target.disabled = true if event.target
+  alert 'Import/Restore succeeded!'
+
+toggle_import_button = (event) ->
+  # This is crazy, but it’s necessary and it works
+  # See http://stackoverflow.com/q/14841739
+  setTimeout (()->
+    d.getElementById('button_import').disabled = event.target.value.trim().length is 0
+  ), 1
+
+interval_check_whether_day_changed = () ->
+  current_thingset_date = get_today_thingset().dataset.date
+  if current_thingset_date and not is_current_day current_thingset_date
+    archive_thingset get_current_thingset_state()
+    clear_and_render_prior load_state 'prior'
+
 d.addEventListener 'DOMContentLoaded', ->
-  if localStorage.getItem('warning_dismissed') isnt null
+  if localStorage.getItem('warning_dismissed')
     d.getElementById('warning').style.display = 'none'
 
   current_state = load_state 'current'
   if current_state and not is_current_day current_state.date
     archive_thingset current_state
   else if current_state
-    render_current_state current_state unless current_state is null
+    render_current_state current_state
 
-  setInterval (() ->
-    current_thingset_date = get_today_thingset().dataset.date
-    if current_thingset_date and not is_current_day current_thingset_date
-      archive_thingset get_current_thingset_state()
-      clear_and_render_prior()
-  ), 60000
+  setInterval interval_check_whether_day_changed, 60000
 
   inputs = to_array d.getElementsByTagName 'input'
 
@@ -162,7 +189,14 @@ d.addEventListener 'DOMContentLoaded', ->
     localStorage.setItem 'warning_dismissed', JSON.stringify true
     d.getElementById('warning').style.display = 'none'
 
-  d.getElementById('button_export').addEventListener 'click', export_prior_things
+  d.getElementById('button_export').addEventListener 'click', do_export
+
+  # TODO: These listeners don’t seem to be sufficient to detect when text is pasted in
+  d.getElementById('import_input').addEventListener 'keypress', toggle_import_button
+  d.getElementById('import_input').addEventListener 'change', toggle_import_button
+  d.getElementById('import_input').addEventListener 'paste', toggle_import_button
+
+  d.getElementById('button_import').addEventListener 'click', handle_import_click
 
   # Prior state is rendered last because it’s more important to set up interactivity first
-  clear_and_render_prior()
+  clear_and_render_prior load_state 'prior'

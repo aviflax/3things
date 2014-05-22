@@ -47,17 +47,12 @@ input[type="text"] {
   text-decoration: line-through;
 }
 
-details#prior {
-  border-top: 1px solid silver;
-  border-bottom: 1px solid silver;
-  margin: 50px 0 50px 0;
-  padding: 20px 80px 20px 10px;
-  display: inline-block;
-  width: 100%;
-}
-
 details > details {
   margin-left: 20px;
+}
+
+#section_prior_import_export {
+  margin: 50px 0;
 }
 
 footer {
@@ -69,9 +64,13 @@ footer li {
   margin-right: 1em;
 }
 
-#export_output {
+textarea {
   display: block;
   width: 100%;
   font-family: monospace;
   font-size: 10pt;
+}
+
+label {
+  display: block;
 }
