@@ -217,8 +217,9 @@
   clear_and_render_prior = function(prior_state) {
     clear_prior_things();
     if (prior_state) {
-      return render_prior_things(prior_state);
+      render_prior_things(prior_state);
     }
+    d.getElementById('prior').style.display = !prior_state || prior_state.length === 0 ? 'none' : 'block';
   };
 
   do_export = function() {

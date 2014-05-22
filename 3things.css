@@ -51,7 +51,7 @@ details > details {
   margin-left: 20px;
 }
 
-#section_prior_import_export {
+#secondary_features {
   margin: 50px 0;
 }
 
@@ -73,4 +73,5 @@ textarea {
 
 label {
   display: block;
+  font-size: 12pt;
 }

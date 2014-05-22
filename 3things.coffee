@@ -124,6 +124,8 @@ is_current_day = (date) ->
 clear_and_render_prior = (prior_state) ->
   clear_prior_things()
   render_prior_things prior_state if prior_state
+  d.getElementById('prior').style.display = if not prior_state or prior_state.length is 0 then 'none' else 'block'
+  return
 
 do_export = () ->
   output = d.getElementById 'export_output'
