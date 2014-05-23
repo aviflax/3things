@@ -14,13 +14,29 @@
     return new Date().toISOString();
   };
 
+  get_checkbox = function(i) {
+    return d.getElementById(input_ids[i] + '_status');
+  };
+
+  get_text_input = function(i) {
+    return d.getElementById(input_ids[i] + '_text');
+  };
+
+  get_today_thingset = function() {
+    return d.getElementById('today_things');
+  };
+
+  update_today_list_date = function() {
+    return get_today_thingset().dataset.date = current_iso_date();
+  };
+
   update_input_render_state = function(checkbox) {
     var text_input;
     text_input = checkbox.nextSibling;
     if (checkbox.checked) {
-      return text_input.classList.add('completed');
+      text_input.classList.add('completed');
     } else {
-      return text_input.classList.remove('completed');
+      text_input.classList.remove('completed');
     }
   };
 
@@ -33,19 +49,7 @@
     } else {
       delete checkbox.dataset.date_time_completed;
     }
-    return save_current_state();
-  };
-
-  get_checkbox = function(i) {
-    return d.getElementById(input_ids[i] + '_status');
-  };
-
-  get_text_input = function(i) {
-    return d.getElementById(input_ids[i] + '_text');
-  };
-
-  get_today_thingset = function() {
-    return d.getElementById('today_things');
+    save_current_state();
   };
 
   get_thing_state = function(i) {
@@ -75,17 +79,12 @@
     var current;
     current = get_current_thingset_state();
     localStorage.setItem('current', JSON.stringify(current));
-    return console.log('Saved state:', current);
-  };
-
-  update_today_list_date = function() {
-    console.log('Setting today’s list to current date');
-    return get_today_thingset().dataset.date = current_iso_date();
+    console.log('Saved state:', current);
   };
 
   update_and_save = function() {
     update_today_list_date();
-    return save_current_state();
+    save_current_state();
   };
 
   render_current_thing = function(thing, i) {
@@ -93,7 +92,7 @@
     get_text_input(i).value = thing.text;
     checkbox = get_checkbox(i);
     checkbox.checked = thing.completed;
-    return update_input_render_state(checkbox);
+    update_input_render_state(checkbox);
   };
 
   load_state = function(which) {
@@ -110,15 +109,13 @@
   };
 
   render_current_state = function(state) {
-    var i, thing, _i, _len, _ref, _results;
+    var i, thing, _i, _len, _ref;
     get_today_thingset().dataset.date = state.date;
     _ref = state.things;
-    _results = [];
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       thing = _ref[i];
-      _results.push(render_current_thing(thing, i));
+      render_current_thing(thing, i);
     }
-    return _results;
   };
 
   reset_thing = function(i) {
@@ -127,7 +124,7 @@
     checkbox.checked = false;
     text_input = get_text_input(i);
     text_input.value = '';
-    return text_input.style.textDecoration = '';
+    text_input.style.textDecoration = '';
   };
 
   reset_ui = function() {
@@ -135,7 +132,7 @@
     for (i = _i = 0; _i <= 2; i = ++_i) {
       reset_thing(i);
     }
-    return update_today_list_date();
+    update_today_list_date();
   };
 
   archive_thingset = function(thingset) {
@@ -147,7 +144,7 @@
     localStorage.removeItem('current');
     reset_ui();
     console.log('Archived current state');
-    return console.log('Archive value is now:', prior);
+    console.log('Archive value is now:', prior);
   };
 
   prior_thing_to_li = function(thing) {
@@ -178,19 +175,17 @@
   };
 
   clear_prior_things = function() {
-    var child, details, _i, _len, _ref, _results;
+    var child, details, _i, _len, _ref;
     details = d.getElementById('prior');
     _ref = to_array(details.getElementsByTagName('details'));
-    _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       child = _ref[_i];
-      _results.push(details.removeChild(child));
+      details.removeChild(child);
     }
-    return _results;
   };
 
   render_prior_things = function(prior_things) {
-    var thingset, _i, _len, _ref, _results;
+    var thingset, _i, _len, _ref;
     _ref = prior_things.sort(function(a, b) {
       if (a.date < b.date) {
         return 1;
@@ -200,12 +195,10 @@
         return 0;
       }
     });
-    _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       thingset = _ref[_i];
-      _results.push(render_prior_thingset(thingset));
+      render_prior_thingset(thingset);
     }
-    return _results;
   };
 
   is_current_day = function(date) {
@@ -257,11 +250,11 @@
     if (event.target) {
       event.target.disabled = true;
     }
-    return alert('Import/Restore succeeded!');
+    alert('Import/Restore succeeded!');
   };
 
   toggle_import_button = function(event) {
-    return setTimeout((function() {
+    setTimeout((function() {
       return d.getElementById('button_import').disabled = event.target.value.trim().length === 0;
     }), 1);
   };

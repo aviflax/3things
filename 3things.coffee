@@ -2,8 +2,11 @@ d = document
 input_ids = ['first', 'second', 'third']
 
 to_array = (sequential_thing) -> Array.prototype.slice.call sequential_thing
-
 current_iso_date = -> new Date().toISOString()
+get_checkbox = (i) -> d.getElementById input_ids[i] + '_status'
+get_text_input = (i) -> d.getElementById input_ids[i] + '_text'
+get_today_thingset = -> d.getElementById 'today_things'
+update_today_list_date = -> get_today_thingset().dataset.date = current_iso_date()
 
 update_input_render_state = (checkbox) ->
   text_input = checkbox.nextSibling
@@ -11,6 +14,7 @@ update_input_render_state = (checkbox) ->
     text_input.classList.add 'completed'
   else
     text_input.classList.remove 'completed'
+  return
 
 handle_checkbox_change = (event) ->
   checkbox = event.target
@@ -22,10 +26,7 @@ handle_checkbox_change = (event) ->
     delete checkbox.dataset.date_time_completed
 
   save_current_state()
-
-get_checkbox = (i) -> d.getElementById input_ids[i] + '_status'
-get_text_input = (i) -> d.getElementById input_ids[i] + '_text'
-get_today_thingset = -> d.getElementById 'today_things'
+  return
 
 get_thing_state = (i) ->
   completed: get_checkbox(i).checked
@@ -40,20 +41,19 @@ save_current_state = ->
   current = get_current_thingset_state()
   localStorage.setItem 'current', JSON.stringify current
   console.log 'Saved state:', current
-
-update_today_list_date = ->
-  console.log 'Setting today’s list to current date'
-  get_today_thingset().dataset.date = current_iso_date()
+  return
 
 update_and_save = ->
   update_today_list_date()
   save_current_state()
+  return
 
 render_current_thing = (thing, i) ->
   get_text_input(i).value = thing.text
   checkbox = get_checkbox i
   checkbox.checked = thing.completed
   update_input_render_state checkbox
+  return
 
 load_state = (which) ->
   json = localStorage.getItem which
@@ -68,18 +68,20 @@ load_state = (which) ->
 render_current_state = (state) ->
   get_today_thingset().dataset.date = state.date
   render_current_thing thing, i for thing, i in state.things
+  return
 
 reset_thing = (i) ->
   checkbox = get_checkbox i
   checkbox.checked = false
-
   text_input = get_text_input i
   text_input.value = ''
   text_input.style.textDecoration = ''
+  return
 
 reset_ui = ->
   reset_thing i for i in [0..2]
   update_today_list_date()
+  return
 
 archive_thingset = (thingset) ->
   prior_json = localStorage.getItem 'prior'
@@ -90,6 +92,7 @@ archive_thingset = (thingset) ->
   reset_ui()
   console.log 'Archived current state'
   console.log 'Archive value is now:', prior
+  return
 
 prior_thing_to_li = (thing) ->
   li = d.createElement 'li'
@@ -111,10 +114,12 @@ render_prior_thingset = (thingset) ->
 clear_prior_things = ->
   details = d.getElementById 'prior'
   details.removeChild child for child in to_array details.getElementsByTagName 'details'
+  return
 
 render_prior_things = (prior_things) ->
   render_prior_thingset thingset for thingset in prior_things.sort (a, b) ->
     if a.date < b.date then 1 else if a.date > b.date then -1 else 0
+  return
 
 is_current_day = (date) ->
   value = if date instanceof Date then date else new Date date
@@ -152,6 +157,7 @@ handle_import_click = (event) ->
   textarea.value = ''
   event.target.disabled = true if event.target
   alert 'Import/Restore succeeded!'
+  return
 
 toggle_import_button = (event) ->
   # This is crazy, but it’s necessary and it works
@@ -159,6 +165,7 @@ toggle_import_button = (event) ->
   setTimeout (()->
     d.getElementById('button_import').disabled = event.target.value.trim().length is 0
   ), 1
+  return
 
 interval_check_whether_day_changed = ->
   current_thingset_date = get_today_thingset().dataset.date
