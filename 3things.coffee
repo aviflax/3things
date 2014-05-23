@@ -3,7 +3,7 @@ input_ids = ['first', 'second', 'third']
 
 to_array = (sequential_thing) -> Array.prototype.slice.call sequential_thing
 
-current_iso_date = () -> new Date().toISOString()
+current_iso_date = -> new Date().toISOString()
 
 update_input_render_state = (checkbox) ->
   text_input = checkbox.nextSibling
@@ -25,27 +25,27 @@ handle_checkbox_change = (event) ->
 
 get_checkbox = (i) -> d.getElementById input_ids[i] + '_status'
 get_text_input = (i) -> d.getElementById input_ids[i] + '_text'
-get_today_thingset = () -> d.getElementById 'today_things'
+get_today_thingset = -> d.getElementById 'today_things'
 
 get_thing_state = (i) ->
   completed: get_checkbox(i).checked
   date_time_completed: get_checkbox(i).dataset.date_time_completed or null
   text: get_text_input(i).value
 
-get_current_thingset_state = () ->
+get_current_thingset_state = ->
   things: (get_thing_state i for i in [0..2])
   date: get_today_thingset().dataset.date
 
-save_current_state = () ->
+save_current_state = ->
   current = get_current_thingset_state()
   localStorage.setItem 'current', JSON.stringify current
   console.log 'Saved state:', current
 
-update_today_list_date = () ->
+update_today_list_date = ->
   console.log 'Setting today’s list to current date'
   get_today_thingset().dataset.date = current_iso_date()
 
-update_and_save = () ->
+update_and_save = ->
   update_today_list_date()
   save_current_state()
 
@@ -77,7 +77,7 @@ reset_thing = (i) ->
   text_input.value = ''
   text_input.style.textDecoration = ''
 
-reset_ui = () ->
+reset_ui = ->
   reset_thing i for i in [0..2]
   update_today_list_date()
 
@@ -108,7 +108,7 @@ render_prior_thingset = (thingset) ->
   list.appendChild prior_thing_to_li thing for thing in thingset.things
   prior.appendChild details
 
-clear_prior_things = () ->
+clear_prior_things = ->
   details = d.getElementById 'prior'
   details.removeChild child for child in to_array details.getElementsByTagName 'details'
 
@@ -126,7 +126,7 @@ clear_and_render_prior = (prior_state) ->
   d.getElementById('prior').style.display = if not prior_state or prior_state.length is 0 then 'none' else 'block'
   return
 
-handle_export_click = () ->
+handle_export_click = ->
   output = d.getElementById 'export_output'
   output.removeChild child for child in to_array output.childNodes
   data =
@@ -160,13 +160,13 @@ toggle_import_button = (event) ->
     d.getElementById('button_import').disabled = event.target.value.trim().length is 0
   ), 1
 
-interval_check_whether_day_changed = () ->
+interval_check_whether_day_changed = ->
   current_thingset_date = get_today_thingset().dataset.date
   if current_thingset_date and not is_current_day current_thingset_date
     archive_thingset get_current_thingset_state()
     clear_and_render_prior load_state 'prior'
 
-backup_warning_maybe = () ->
+backup_warning_maybe = ->
   last_warning_or_backup = localStorage.getItem 'last_warning_or_backup'
   four_weeks_in_ms = 2419200000
 
@@ -200,7 +200,7 @@ d.addEventListener 'DOMContentLoaded', ->
   # on the text input
   input.addEventListener 'change', handle_checkbox_change for input in inputs when input.type is 'checkbox'
 
-  d.getElementById('button_dismiss_warning').addEventListener 'click', () ->
+  d.getElementById('button_dismiss_warning').addEventListener 'click', ->
     localStorage.setItem 'warning_dismissed', JSON.stringify true
     d.getElementById('warning').style.display = 'none'
 
