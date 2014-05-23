@@ -126,7 +126,7 @@ clear_and_render_prior = (prior_state) ->
   d.getElementById('prior').style.display = if not prior_state or prior_state.length is 0 then 'none' else 'block'
   return
 
-do_export = () ->
+handle_export_click = () ->
   output = d.getElementById 'export_output'
   output.removeChild child for child in to_array output.childNodes
   data =
@@ -134,6 +134,8 @@ do_export = () ->
     prior: load_state 'prior'
   output.value = JSON.stringify data
   output.select()
+  localStorage.last_warning_or_backup = Date.now()
+  return
 
 handle_import_click = (event) ->
   prompt_result = prompt 'This will ERASE all existing data! If you wish to proceed then enter “erase” below.'
@@ -164,6 +166,18 @@ interval_check_whether_day_changed = () ->
     archive_thingset get_current_thingset_state()
     clear_and_render_prior load_state 'prior'
 
+backup_warning_maybe = () ->
+  last_warning_or_backup = localStorage.getItem 'last_warning_or_backup'
+  four_weeks_in_ms = 2419200000
+
+  if last_warning_or_backup is null
+    localStorage.last_warning_or_backup = Date.now()
+  else if Date.now() - last_warning_or_backup > four_weeks_in_ms
+    localStorage.last_warning_or_backup = Date.now()
+    alert 'You haven’t backed up your data in awhile. Better safe than sorry!'
+
+  return
+
 d.addEventListener 'DOMContentLoaded', ->
   if localStorage.getItem('warning_dismissed')
     d.getElementById('warning').style.display = 'none'
@@ -190,7 +204,7 @@ d.addEventListener 'DOMContentLoaded', ->
     localStorage.setItem 'warning_dismissed', JSON.stringify true
     d.getElementById('warning').style.display = 'none'
 
-  d.getElementById('button_export').addEventListener 'click', do_export
+  d.getElementById('button_export').addEventListener 'click', handle_export_click
 
   # TODO: These listeners don’t seem to be sufficient to detect when text is pasted in
   d.getElementById('import_input').addEventListener 'keypress', toggle_import_button
@@ -201,3 +215,5 @@ d.addEventListener 'DOMContentLoaded', ->
 
   # Prior state is rendered last because it’s more important to set up interactivity first
   clear_and_render_prior load_state 'prior'
+
+  backup_warning_maybe()
