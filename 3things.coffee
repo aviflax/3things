@@ -49,9 +49,8 @@ update_and_save = () ->
   update_today_list_date()
   save_current_state()
 
-render_thing = (thing, i) ->
+render_current_thing = (thing, i) ->
   get_text_input(i).value = thing.text
-
   checkbox = get_checkbox i
   checkbox.checked = thing.completed
   update_input_render_state checkbox
@@ -68,7 +67,7 @@ load_state = (which) ->
 
 render_current_state = (state) ->
   get_today_thingset().dataset.date = state.date
-  render_thing thing, i for thing, i in state.things
+  render_current_thing thing, i for thing, i in state.things
 
 reset_thing = (i) ->
   checkbox = get_checkbox i
