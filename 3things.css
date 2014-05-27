@@ -7,13 +7,12 @@ html, body, input {
 body {
   display: inline-block;
   text-align: left;
-  min-width: 32em;
   max-width: 40em;
 }
 
 p {
   line-height: 150%;
-  padding: 0 2em;
+  padding: 0 10px;
 }
 
 #warning {
@@ -30,6 +29,10 @@ p {
 ol, footer ul {
   list-style: none;
   padding: 0;
+}
+
+#today_things {
+  white-space: nowrap;
 }
 
 li {
