@@ -213,7 +213,6 @@ d.addEventListener 'DOMContentLoaded', ->
 
   d.getElementById('button_export').addEventListener 'click', handle_export_click
 
-  # TODO: These listeners don’t seem to be sufficient to detect when text is pasted in
   d.getElementById('import_input').addEventListener 'keypress', toggle_import_button
   d.getElementById('import_input').addEventListener 'change', toggle_import_button
   d.getElementById('import_input').addEventListener 'paste', toggle_import_button
