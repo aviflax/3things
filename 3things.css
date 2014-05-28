@@ -7,7 +7,7 @@ html, body, input {
 body {
   display: inline-block;
   text-align: left;
-  max-width: 40em;
+  max-width: 30em;
 }
 
 p {
@@ -32,18 +32,25 @@ ol, footer ul {
 }
 
 #today_things {
-  white-space: nowrap;
-}
-
-li {
-  margin-top: 10px;
-}
-
-input[type="text"] {
-  text-align: left;
-  border: none;
-  width: 90%;
   font-size: 115%;
+  text-align: left;
+}
+
+#today_things li {
+  margin-top: 30px;
+}
+
+label.thing_text {
+  border: none;
+}
+
+label.thing_text.default {
+  color: silver;
+}
+
+#today_things input {
+  display: inline;
+  vertical-align: middle;
 }
 
 .completed {
@@ -74,7 +81,7 @@ textarea {
   font-size: 10pt;
 }
 
-label {
+#import label {
   display: block;
   font-size: 12pt;
 }
