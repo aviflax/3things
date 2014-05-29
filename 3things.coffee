@@ -8,7 +8,7 @@ get_today_thing = (i) -> d.getElementById input_ids[i] + '_text'
 get_today_thingset = -> d.getElementById 'today_things'
 update_today_list_date = -> get_today_thingset().dataset.date = current_iso_date()
 
-update_input_render_state = (checkbox) ->
+update_checkbox_state = (checkbox) ->
   text_input = checkbox.nextSibling
   if checkbox.checked
     text_input.classList.add 'completed'
@@ -18,7 +18,7 @@ update_input_render_state = (checkbox) ->
 
 handle_checkbox_change = (event) ->
   checkbox = event.target
-  update_input_render_state checkbox
+  update_checkbox_state checkbox
 
   if checkbox.checked
     checkbox.dataset.dateTimeCompleted = current_iso_date()
@@ -31,7 +31,7 @@ handle_checkbox_change = (event) ->
 get_thing_state = (i) ->
   completed: get_checkbox(i).checked
   date_time_completed: get_checkbox(i).dataset.dateTimeCompleted or null
-  text: get_today_thing(i).textContent
+  text: get_today_thing(i).value
 
 get_current_thingset_state = ->
   things: (get_thing_state i for i in [0..2])
@@ -43,35 +43,16 @@ save_current_state = ->
   console.log 'Saved state:', current
   return
 
-render_label_as_default = (label) ->
-  label.classList.add 'default'
-  label.textContent = if d.activeElement is label then '' else label.dataset.defaultText
-
-update_label_state = (label) ->
-  if label.textContent.trim().length is 0 or label.textContent == label.dataset.defaultText
-    render_label_as_default label
-  else
-    label.classList.remove 'default'
-  return
-
 update_and_save = ->
-  update_label_state label for label in (get_today_thing i for i in [0..2])
   update_today_list_date()
   save_current_state()
   return
 
 render_current_thing = (thing, i) ->
-  label = get_today_thing i
-  label.textContent = thing.text
-  update_label_state label
+  get_today_thing(i).value = thing.text
   checkbox = get_checkbox i
   checkbox.checked = thing.completed
-  update_input_render_state checkbox
-  return
-
-handle_label_focus = (event) ->
-  label = event.target
-  if event.target.textContent == label.dataset.defaultText then label.textContent = ''
+  update_checkbox_state checkbox
   return
 
 load_state = (which) ->
@@ -92,7 +73,7 @@ render_current_state = (state) ->
 reset_thing = (i) ->
   checkbox = get_checkbox i
   checkbox.checked = false
-  render_label_as_default get_today_thing i
+  get_today_thing(i).value = ''
   return
 
 reset_ui = ->
@@ -214,11 +195,8 @@ d.addEventListener 'DOMContentLoaded', ->
 
   setInterval interval_check_whether_day_changed, 60000
 
-  thing_labels = to_array d.getElementsByClassName 'thing_text'
-  label.addEventListener 'input', update_and_save for label in thing_labels
-  label.addEventListener 'click', handle_label_focus for label in thing_labels
-  label.addEventListener 'focus', handle_label_focus for label in thing_labels
-  label.addEventListener 'blur', ((e)->update_label_state(e.target)) for label in thing_labels
+  thing_textareas = to_array d.getElementsByClassName 'thing_text'
+  textarea.addEventListener 'input', update_and_save for textarea in thing_textareas
 
   # this currently results in save_current_state being called twice when checkbox state is changed,
   # apparently because the other event listener/handler causes another change event to be fired

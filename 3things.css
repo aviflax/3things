@@ -6,8 +6,9 @@ html, body, input {
 
 body {
   display: inline-block;
+  width: 90%; /* Use most of the screen real estate on phones */
   text-align: left;
-  max-width: 30em;
+  max-width: 40em; /* Don’t get too wide on large-screen devices */
 }
 
 p {
@@ -37,18 +38,23 @@ ol, footer ul {
 }
 
 #today_things li {
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
-label.thing_text {
+.thing_text {
+  display: inline;
+  width: 90%;
+  /* Setting the height to 2.5em seems to ensure that if there are 3 lines, the very top of the
+     third line is visible, so the user knows that there *is* a third line. */
+  height: 2.5em;
   border: none;
+  font-family: inherit;
+  font-size: inherit;
+  vertical-align: top;
+  resize: none;
 }
 
-label.thing_text.default {
-  color: silver;
-}
-
-#today_things input {
+#today_things input[type=checkbox] {
   display: inline;
   vertical-align: middle;
 }
@@ -74,7 +80,7 @@ footer li {
   margin-right: 1em;
 }
 
-textarea {
+#secondary_features textarea {
   display: block;
   width: 100%;
   font-family: monospace;
