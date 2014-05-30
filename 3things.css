@@ -44,19 +44,31 @@ ol, footer ul {
 .thing_text {
   display: inline;
   width: 90%;
-  /* Setting the height to 2.5em seems to ensure that if there are 3 lines, the very top of the
-     third line is visible, so the user knows that there *is* a third line. */
-  height: 2.5em;
   border: none;
   font-family: inherit;
-  font-size: inherit;
+  font-size: 18pt;
   vertical-align: top;
+
+  /* I have nothing against resizeable textareas; in fact I prefer them. However when a textarea
+     has no border, like these, the handles just look really odd (at least in Chrome/Mac) just
+     hanging out there in space. */
   resize: none;
+
+  /* The auto-resize feature depends on these rules. */
+  padding: 0;
+  min-height: 20pt;
+}
+
+.thing_text:focus {
+  /* When the textareas have focus, they have a border (the focus border), so the resize handles
+     don’t look strange. And they’re useful, so let’s bring them back. */
+  resize: both;
 }
 
 #today_things input[type=checkbox] {
   display: inline;
-  vertical-align: middle;
+  vertical-align: top;
+  margin: 5px 10px 0 0;
 }
 
 .completed {

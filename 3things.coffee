@@ -43,13 +43,22 @@ save_current_state = ->
   console.log 'Saved state:', current
   return
 
-update_and_save = ->
+resize_textarea = (textarea) ->
+  # technique from http://stackoverflow.com/a/8522283/7012
+  textarea.style.height = '0'
+  textarea.style.height = textarea.scrollHeight + 'px'
+  return
+
+handle_text_input = (event) ->
+  resize_textarea this
   update_today_list_date()
   save_current_state()
   return
 
 render_current_thing = (thing, i) ->
-  get_today_thing(i).value = thing.text
+  textarea = get_today_thing i
+  textarea.value = thing.text
+  resize_textarea textarea
   checkbox = get_checkbox i
   checkbox.checked = thing.completed
   update_checkbox_state checkbox
@@ -183,6 +192,15 @@ backup_warning_maybe = ->
 
   return
 
+dismiss_warning = ->
+  localStorage.setItem 'warning_dismissed', 'true'
+  d.getElementById('warning').style.display = 'none'
+  return
+
+resize_all_things = ->
+  resize_textarea get_today_thing i for i in [0..2]
+  return
+
 d.addEventListener 'DOMContentLoaded', ->
   if localStorage.getItem('warning_dismissed')
     d.getElementById('warning').style.display = 'none'
@@ -193,26 +211,18 @@ d.addEventListener 'DOMContentLoaded', ->
   else if current_state
     render_current_state current_state
 
+  # render_current_state calls resize_textarea but I’ve noticed that there’s some kind of
+  # race condition in Chrome/Mac wherein sometimes the resizing doesn’t properly work until
+  # a few ms after the page loads — I’m not sure how many exactly. Therefore this VOODOO HACK!
+  setTimeout resize_all_things, ms for ms in [1..10]
+
   setInterval interval_check_whether_day_changed, 60000
 
-  thing_textareas = to_array d.getElementsByClassName 'thing_text'
-  textarea.addEventListener 'input', update_and_save for textarea in thing_textareas
-
-  # this currently results in save_current_state being called twice when checkbox state is changed,
-  # apparently because the other event listener/handler causes another change event to be fired
-  # on the text input
+  textarea.addEventListener 'input', handle_text_input for textarea in to_array d.getElementsByClassName 'thing_text'
   input.addEventListener 'change', handle_checkbox_change for input in to_array d.getElementsByTagName 'input' when input.type is 'checkbox'
-
-  d.getElementById('button_dismiss_warning').addEventListener 'click', ->
-    localStorage.setItem 'warning_dismissed', JSON.stringify true
-    d.getElementById('warning').style.display = 'none'
-
+  d.getElementById('button_dismiss_warning').addEventListener 'click', dismiss_warning
   d.getElementById('button_export').addEventListener 'click', handle_export_click
-
-  d.getElementById('import_input').addEventListener 'keypress', toggle_import_button
-  d.getElementById('import_input').addEventListener 'change', toggle_import_button
-  d.getElementById('import_input').addEventListener 'paste', toggle_import_button
-
+  d.getElementById('import_input').addEventListener 'input', toggle_import_button
   d.getElementById('button_import').addEventListener 'click', handle_import_click
 
   # Prior state is rendered last because it’s more important to set up interactivity first
