@@ -31,7 +31,7 @@ handle_checkbox_change = (event) ->
 get_thing_state = (i) ->
   completed: get_checkbox(i).checked
   date_time_completed: get_checkbox(i).dataset.dateTimeCompleted or null
-  text: get_today_thing(i).value
+  text: get_today_thing(i).value.trim()
 
 get_current_thingset_state = ->
   things: (get_thing_state i for i in [0..2])
