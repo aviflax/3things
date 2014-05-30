@@ -117,6 +117,7 @@ render_prior_thingset = (thingset) ->
   details.appendChild list
   list.appendChild prior_thing_to_li thing for thing in thingset.things
   prior.appendChild details
+  return
 
 clear_prior_things = ->
   details = d.getElementById 'prior'
@@ -179,6 +180,7 @@ interval_check_whether_day_changed = ->
   if current_thingset_date and not is_current_day current_thingset_date
     archive_thingset get_current_thingset_state()
     clear_and_render_prior load_state 'prior'
+  return
 
 backup_warning_maybe = ->
   last_warning_or_backup = localStorage.getItem 'last_warning_or_backup'
