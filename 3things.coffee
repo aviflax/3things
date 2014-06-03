@@ -176,9 +176,9 @@ toggle_import_button = (event) ->
   return
 
 interval_check_whether_day_changed = ->
-  current_thingset_date = get_today_thingset().dataset.date
-  if current_thingset_date and not is_current_day current_thingset_date
-    archive_thingset get_current_thingset_state()
+  current_thingset = get_current_thingset_state()
+  if current_thingset.date and not is_current_day current_thingset.date and not thingset_is_empty current_thingset
+    archive_thingset current_thingset
     clear_and_render_prior load_state 'prior'
   return
 
@@ -203,12 +203,17 @@ resize_all_things = ->
   resize_textarea get_today_thing i for i in [0..2]
   return
 
+thingset_is_empty = (thingset) ->
+  return true if not thingset or not thingset.things or not thingset.things.length
+  things_with_text = (thing for thing in thingset.things when thing.text.trim().length > 0)
+  return things_with_text.length is 0
+
 d.addEventListener 'DOMContentLoaded', ->
   if localStorage.getItem('warning_dismissed')
     d.getElementById('warning').style.display = 'none'
 
   current_state = load_state 'current'
-  if current_state and not is_current_day current_state.date
+  if not thingset_is_empty current_state and not is_current_day current_state.date
     archive_thingset current_state
   else if current_state
     render_current_state current_state
