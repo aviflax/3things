@@ -216,7 +216,7 @@ d.addEventListener 'DOMContentLoaded', ->
   # render_current_state calls resize_textarea but I’ve noticed that there’s some kind of
   # race condition in Chrome/Mac wherein sometimes the resizing doesn’t properly work until
   # a few ms after the page loads — I’m not sure how many exactly. Therefore this VOODOO HACK!
-  setTimeout resize_all_things, ms for ms in [1..10]
+  setTimeout resize_all_things, ms for ms in [1...10]
 
   setInterval interval_check_whether_day_changed, 60000
 

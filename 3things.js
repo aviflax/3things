@@ -309,7 +309,7 @@
     } else if (current_state) {
       render_current_state(current_state);
     }
-    for (ms = _i = 1; _i <= 10; ms = ++_i) {
+    for (ms = _i = 1; _i < 10; ms = ++_i) {
       setTimeout(resize_all_things, ms);
     }
     setInterval(interval_check_whether_day_changed, 60000);
