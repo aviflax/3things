@@ -11,3 +11,7 @@ If you’d like to work on Three Things, either to customize it for your own pur
 5. Run `coffee -wc 3things.coffee` to have the CoffeeScript compiler watch the CoffeeScript file and automatically compile it to JavaScript when it sees changes
 6. Edit the files in the editor of your choice
 7. Run the app directly in your browser by opening the HTML file from your filesystem
+
+## License
+
+This software is licensed under the terms of the MIT License. See [LICENSE](LICENSE) for the full terms.
