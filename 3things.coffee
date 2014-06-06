@@ -177,9 +177,12 @@ toggle_import_button = (event) ->
 
 interval_check_whether_day_changed = ->
   current_thingset = get_current_thingset_state()
-  if current_thingset.date and not is_current_day current_thingset.date and not thingset_is_empty current_thingset
+  if current_thingset.date and not is_current_day(current_thingset.date) and not thingset_is_empty(current_thingset)
+    console.log 'Interval check: archiving current thingset since the day has changed'
     archive_thingset current_thingset
     clear_and_render_prior load_state 'prior'
+  else
+    console.log 'Interval check: *not* archiving current thingset'
   return
 
 backup_warning_maybe = ->

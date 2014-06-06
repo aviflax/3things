@@ -268,9 +268,12 @@
   interval_check_whether_day_changed = function() {
     var current_thingset;
     current_thingset = get_current_thingset_state();
-    if (current_thingset.date && !is_current_day(current_thingset.date && !thingset_is_empty(current_thingset))) {
+    if (current_thingset.date && !is_current_day(current_thingset.date) && !thingset_is_empty(current_thingset)) {
+      console.log('Interval check: archiving current thingset since the day has changed');
       archive_thingset(current_thingset);
       clear_and_render_prior(load_state('prior'));
+    } else {
+      console.log('Interval check: *not* archiving current thingset');
     }
   };
 
