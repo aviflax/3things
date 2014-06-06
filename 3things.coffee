@@ -39,8 +39,11 @@ get_current_thingset_state = ->
 
 save_current_state = ->
   current = get_current_thingset_state()
-  localStorage.setItem 'current', JSON.stringify current
-  console.log 'Saved state:', current
+  if not thingset_is_empty current
+    localStorage.setItem 'current', JSON.stringify current
+    console.log 'Saved state:', current
+  else
+    console.log 'Did *not* save state because it was empty.'
   return
 
 resize_textarea = (textarea) ->
