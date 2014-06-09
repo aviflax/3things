@@ -2,6 +2,8 @@ CACHE MANIFEST
 
 # v1 - 2014-06-09
 
+CACHE:
+
 3things.css
 3things.js
 about.html
