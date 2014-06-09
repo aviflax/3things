@@ -331,7 +331,7 @@
       d.getElementById('warning').style.display = 'none';
     }
     current_state = load_state('current');
-    if (!thingset_is_empty(current_state && !is_current_day(current_state.date))) {
+    if (!thingset_is_empty(current_state) && !is_current_day(current_state.date)) {
       archive_thingset(current_state);
     } else if (current_state) {
       render_current_state(current_state);
