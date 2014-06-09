@@ -16,7 +16,8 @@ p {
   padding: 0 10px;
 }
 
-#warning {
+.warning {
+  display: none;
   border: 2px groove red;
   padding: 1em;
   border-radius: 20px;

@@ -293,9 +293,11 @@
     }
   };
 
-  dismiss_warning = function() {
-    localStorage.setItem('warning_dismissed', 'true');
-    d.getElementById('warning').style.display = 'none';
+  dismiss_warning = function(event) {
+    var storage_key;
+    storage_key = this.parentNode.id + '_dismissed';
+    localStorage.setItem(storage_key, 'true');
+    this.parentNode.style.display = 'none';
   };
 
   resize_all_things = function() {
@@ -327,8 +329,11 @@
 
   d.addEventListener('DOMContentLoaded', function() {
     var current_state, input, ms, textarea, _i, _j, _k, _len, _len1, _ref, _ref1;
-    if (localStorage.getItem('warning_dismissed')) {
-      d.getElementById('warning').style.display = 'none';
+    if (localStorage.getItem('data_warning_dismissed') === null) {
+      d.getElementById('data_warning').style.display = 'block';
+    }
+    if (window.navigator.userAgent.indexOf('Firefox') !== -1 && localStorage.getItem('firefox_warning_dismissed') === null) {
+      d.getElementById('firefox_warning').style.display = 'block';
     }
     current_state = load_state('current');
     if (!thingset_is_empty(current_state) && !is_current_day(current_state.date)) {
@@ -352,7 +357,8 @@
         input.addEventListener('change', handle_checkbox_change);
       }
     }
-    d.getElementById('button_dismiss_warning').addEventListener('click', dismiss_warning);
+    d.getElementById('button_dismiss_data_warning').addEventListener('click', dismiss_warning);
+    d.getElementById('button_dismiss_firefox_warning').addEventListener('click', dismiss_warning);
     d.getElementById('button_export').addEventListener('click', handle_export_click);
     d.getElementById('import_input').addEventListener('input', toggle_import_button);
     d.getElementById('button_import').addEventListener('click', handle_import_click);

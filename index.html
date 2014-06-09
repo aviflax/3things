@@ -22,18 +22,25 @@
         </ol>
       </section>
 
+      <section id="firefox_warning" class="warning">
+        <p>Welcome, Firefox user!</p>
+        <p>Unfortunately, Firefox <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=591737">does not support</a> the HTML5 elements <code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code>, so Three Things is gonna look funky.</p>
+        <p>You may wish to consider using a different browser for Three Things.</p>
+        <button id="button_dismiss_firefox_warning">OK, got it</button>
+      </section>
+
       <details id="secondary_features">
         <summary>et cetera</summary>
         <details id="prior">
           <summary>Prior Things</summary>
-          <section id="warning">
+          <section id="data_warning" class="warning">
             <p>A one-time warning on where your prior things are stored:</p>
             <p>Three Things runs entirely in your Web browser; it transfers no data to any servers.</p>
             <p>This means that all your prior things are saved right in your browser — and nowhere else!</p>
             <p>So if your browser gets reset, or if your device is lost, or your drive dies, then all your prior things will be <strong>gone</strong>.</p>
             <p>A backup/export feature exists, but you’ll have to remember to use it periodically to save your prior things somewhere else, or you might lose them.</p>
             <p>Consider yourself warned!</p>
-            <button id="button_dismiss_warning">OK, I get it</button>
+            <button id="button_dismiss_data_warning">OK, I get it</button>
           </section>
           <details>
               <summary>28 April 2014</summary>

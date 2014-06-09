@@ -200,9 +200,10 @@ backup_warning_maybe = ->
 
   return
 
-dismiss_warning = ->
-  localStorage.setItem 'warning_dismissed', 'true'
-  d.getElementById('warning').style.display = 'none'
+dismiss_warning = (event) ->
+  storage_key = this.parentNode.id + '_dismissed'
+  localStorage.setItem storage_key, 'true'
+  this.parentNode.style.display = 'none'
   return
 
 resize_all_things = ->
@@ -215,8 +216,11 @@ thingset_is_empty = (thingset) ->
   return things_with_text.length is 0
 
 d.addEventListener 'DOMContentLoaded', ->
-  if localStorage.getItem('warning_dismissed')
-    d.getElementById('warning').style.display = 'none'
+  if localStorage.getItem('data_warning_dismissed') is null
+    d.getElementById('data_warning').style.display = 'block'
+
+  if window.navigator.userAgent.indexOf('Firefox') isnt -1 and localStorage.getItem('firefox_warning_dismissed') is null
+    d.getElementById('firefox_warning').style.display = 'block'
 
   current_state = load_state 'current'
   if not thingset_is_empty(current_state) and not is_current_day(current_state.date)
@@ -233,7 +237,8 @@ d.addEventListener 'DOMContentLoaded', ->
 
   textarea.addEventListener 'input', handle_text_input for textarea in to_array d.getElementsByClassName 'thing_text'
   input.addEventListener 'change', handle_checkbox_change for input in to_array d.getElementsByTagName 'input' when input.type is 'checkbox'
-  d.getElementById('button_dismiss_warning').addEventListener 'click', dismiss_warning
+  d.getElementById('button_dismiss_data_warning').addEventListener 'click', dismiss_warning
+  d.getElementById('button_dismiss_firefox_warning').addEventListener 'click', dismiss_warning
   d.getElementById('button_export').addEventListener 'click', handle_export_click
   d.getElementById('import_input').addEventListener 'input', toggle_import_button
   d.getElementById('button_import').addEventListener 'click', handle_import_click
