@@ -6,6 +6,76 @@
     <title>Three Things</title>
     <script type="text/javascript" charset="utf-8" src="3things.js"></script>
     <link rel="stylesheet" href="3things.css" charset="utf-8">
+    <script>
+  		var counter = 1;
+
+  		appCacheLog = function() {
+  		    var message = Array.prototype.join.call(arguments, " ");
+  		    console.log(message);
+          return;
+  		}
+
+  		// log each of the events fired by window.applicationCache
+  		window.applicationCache.onchecking = function(e) {
+  		    appCacheLog("Checking for updates");
+  		}
+
+  		window.applicationCache.onnoupdate = function(e) {
+  		    appCacheLog("No updates found");
+  		}
+
+  		window.applicationCache.onupdateready = function(e) {
+  		    appCacheLog("Update complete");
+  		}
+
+  		window.applicationCache.onobsolete = function(e) {
+  		    appCacheLog("Cache obsolete");
+  		}
+
+  		window.applicationCache.ondownloading = function(e) {
+  		    appCacheLog("Downloading updates");
+  		}
+
+  		window.applicationCache.oncached = function(e) {
+  		    appCacheLog("Cached");
+  		}
+
+  		window.applicationCache.onerror = function(e) {
+  		    appCacheLog("ApplicationCache error");
+  		}
+
+  		window.applicationCache.onprogress = function(e) {
+  		    appCacheLog("Progress: downloaded file " + counter);
+  		    counter++;
+  		}
+
+  		window.addEventListener("online", function(e) {
+  		    appCacheLog("You are online");
+  		}, true);
+
+  		window.addEventListener("offline", function(e) {
+  		    appCacheLog("You are offline");
+  		}, true);
+
+  		// Convert applicationCache status codes into messages
+  		showCacheStatus = function(n) {
+  		    statusMessages = ["Uncached","Idle","Checking","Downloading","Update Ready","Obsolete"];
+  		    return statusMessages[n];
+  		}
+
+  		onload = function(e) {
+  		    // Check for required browser features
+  		    if (!window.applicationCache) {
+  		        appCacheLog("HTML5 offline web applications (ApplicationCache) are not supported in your browser.");
+  		        return;
+  		    }
+
+  		    appCacheLog("Initial AppCache status: " + showCacheStatus(window.applicationCache.status));
+
+  		}
+
+      console.log("HELLO!");
+    </script>
   </head>
   <body>
 
