@@ -27,7 +27,7 @@
   };
 
   update_today_list_date = function() {
-    return get_today_thingset().dataset.date = current_iso_date();
+    return get_today_thingset().setAttribute('data-date', current_iso_date());
   };
 
   update_checkbox_state = function(checkbox) {
@@ -45,9 +45,9 @@
     checkbox = event.target;
     update_checkbox_state(checkbox);
     if (checkbox.checked) {
-      checkbox.dataset.dateTimeCompleted = current_iso_date();
+      checkbox.setAttribute('data-dateTimeCompleted', current_iso_date());
     } else {
-      delete checkbox.dataset.dateTimeCompleted;
+      checkbox.removeAttribute('data-dateTimeCompleted');
     }
     save_current_state();
   };
@@ -55,7 +55,7 @@
   get_thing_state = function(i) {
     return {
       completed: get_checkbox(i).checked,
-      date_time_completed: get_checkbox(i).dataset.dateTimeCompleted || null,
+      date_time_completed: get_checkbox(i).getAttribute('data-dateTimeCompleted') || null,
       text: get_today_thing(i).value.trim()
     };
   };
@@ -71,7 +71,7 @@
         }
         return _results;
       })(),
-      date: get_today_thingset().dataset.date
+      date: get_today_thingset().getAttribute('data-date')
     };
   };
 
@@ -122,7 +122,7 @@
 
   render_current_state = function(state) {
     var i, thing, _i, _len, _ref;
-    get_today_thingset().dataset.date = state.date;
+    get_today_thingset().setAttribute('data-date', state.date);
     _ref = state.things;
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       thing = _ref[i];

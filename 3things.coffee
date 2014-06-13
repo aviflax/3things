@@ -6,7 +6,7 @@ current_iso_date = -> new Date().toISOString()
 get_checkbox = (i) -> d.getElementById input_ids[i] + '_status'
 get_today_thing = (i) -> d.getElementById input_ids[i] + '_text'
 get_today_thingset = -> d.getElementById 'today_things'
-update_today_list_date = -> get_today_thingset().dataset.date = current_iso_date()
+update_today_list_date = -> get_today_thingset().setAttribute 'data-date', current_iso_date()
 
 update_checkbox_state = (checkbox) ->
   text_input = checkbox.nextSibling
@@ -21,21 +21,21 @@ handle_checkbox_change = (event) ->
   update_checkbox_state checkbox
 
   if checkbox.checked
-    checkbox.dataset.dateTimeCompleted = current_iso_date()
+    checkbox.setAttribute 'data-dateTimeCompleted', current_iso_date()
   else
-    delete checkbox.dataset.dateTimeCompleted
+    checkbox.removeAttribute 'data-dateTimeCompleted'
 
   save_current_state()
   return
 
 get_thing_state = (i) ->
   completed: get_checkbox(i).checked
-  date_time_completed: get_checkbox(i).dataset.dateTimeCompleted or null
+  date_time_completed: get_checkbox(i).getAttribute('data-dateTimeCompleted') or null
   text: get_today_thing(i).value.trim()
 
 get_current_thingset_state = ->
   things: (get_thing_state i for i in [0..2])
-  date: get_today_thingset().dataset.date
+  date: get_today_thingset().getAttribute 'data-date'
 
 save_current_state = ->
   current = get_current_thingset_state()
@@ -78,7 +78,7 @@ load_state = (which) ->
     null
 
 render_current_state = (state) ->
-  get_today_thingset().dataset.date = state.date
+  get_today_thingset().setAttribute 'data-date', state.date
   render_current_thing thing, i for thing, i in state.things
   return
 
