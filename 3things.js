@@ -335,6 +335,9 @@
     if (window.navigator.userAgent.indexOf('Firefox') !== -1 && localStorage.getItem('firefox_warning_dismissed') === null) {
       d.getElementById('firefox_warning').style.display = 'block';
     }
+    if (window.navigator.userAgent.indexOf('MSIE') !== -1 && localStorage.getItem('ie_warning_dismissed') === null) {
+      d.getElementById('ie_warning').style.display = 'block';
+    }
     current_state = load_state('current');
     if (!thingset_is_empty(current_state) && !is_current_day(current_state.date)) {
       archive_thingset(current_state);
@@ -359,6 +362,7 @@
     }
     d.getElementById('button_dismiss_data_warning').addEventListener('click', dismiss_warning);
     d.getElementById('button_dismiss_firefox_warning').addEventListener('click', dismiss_warning);
+    d.getElementById('button_dismiss_ie_warning').addEventListener('click', dismiss_warning);
     d.getElementById('button_export').addEventListener('click', handle_export_click);
     d.getElementById('import_input').addEventListener('input', toggle_import_button);
     d.getElementById('button_import').addEventListener('click', handle_import_click);
