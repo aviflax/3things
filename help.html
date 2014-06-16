@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width"/>
+    <title>Help « Three Things</title>
+    <link rel="stylesheet" href="3things.css" charset="utf-8">
+    <style>
+      section {
+        margin: 3em 0;
+      }
+
+      li {
+        margin: 0.5em 0;
+      }
+
+      table {
+        border-collapse: collapse;
+        margin: 1em;
+      }
+
+      th, td {
+        border: 1px solid silver;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <header>
+      <h1>Help « Three Things</h1>
+    </header>
+
+    <section id="recommended-browsers">
+      <h1>Recommended Browsers</h1>
+      <ul>
+        <li>On Mac OS X and Windows: <a href="https://www.google.com/chrome/browser/">Chrome</a></li>
+        <li>On iOS: Safari works just fine
+          <ul><li>Chrome <em>probably</em> does too, but I haven’t tried it</li></ul>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h1>Using Three Things while Offline</h1>
+      <p>If you’re using Safari for iOS; Chrome for Mac, Windows, or Linux; or Internet Explorer for Windows then Three Things works great when you’re offline.</p>
+      <p>Before you do, you just need to open the app once when you’re online; after that you should be able to access it using its normal URL even when you’re offline.</p>
+    </section>
+
+    <section id="browser-support">
+      <h1>Browser Support</h1>
+
+      Three Things has been tested with these browser/OS combinations:
+
+      <table>
+        <tr>
+          <th>OS</th>
+          <th>Browser</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td rowspan="3">Mac OS&nbsp;X 10.9</td>
+          <td>Chrome 35</td>
+          <td>Seems to work!</td>
+        </tr>
+        <tr>
+          <td>Safari 7</td>
+          <td>Seems to work except for offline support.</td>
+        </tr>
+        <tr>
+          <td>Firefox 30</td>
+          <td>Seems to work except for <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=591737"><code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code></a>.</td>
+        </tr>
+        <tr>
+          <td>Windows 8</td>
+          <td>Internet Explorer 10</td>
+          <td>Seems to work except for <a href="http://caniuse.com/details"><code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code></a>.</td>
+        </tr>
+        <tr>
+          <td>iOS 7</td>
+          <td>Safari (7)</td>
+          <td>Seems to work!</td>
+        </tr>
+      </table>
+
+      <p>If your preferred browser isn’t listed, feel free to try it — I’d love <a href="feedback.html">to hear</a> how it works for you!</p>
+    </section>
+
+    <section id="safari-mac-offline">
+      <h1>Using Three Things while Offline with Safari 7 for Mac OS X</h1>
+      <ol>
+        <li>Open the app (with Safari) while online</li>
+        <li>Save the main file to your hard drive
+          <ol>
+            <li>Choose the “Web Archive” format for the saved file</li>
+          </ol>
+        </li>
+        <li>Open the saved file with Safari</li>
+        <li>Use the saved file from now on, whether online or offline</li>
+      </ol>
+    </section>
+
+    <nav><a href="/">Back to Three Things</a></nav>
+  </body>
+</html>

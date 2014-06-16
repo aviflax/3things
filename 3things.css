@@ -28,7 +28,7 @@ p {
   padding: 0;
 }
 
-ol, footer ul {
+ol#today_things, footer ul {
   list-style: none;
   padding: 0;
 }
