@@ -8,7 +8,7 @@ If you’d like to work on Three Things, either to customize it for your own pur
 2. Install [CoffeeScript](http://coffeescript.org) with `npm install -g coffee-script`
 3. Clone this repo (or a fork of this repo)
 4. In a terminal, `cd` to the repo
-5. Run `coffee -wc 3things.coffee` to have the CoffeeScript compiler watch the CoffeeScript file and automatically compile it to JavaScript when it sees changes
+5. Run `coffee -wc js/*.coffee` to have the CoffeeScript compiler watch the CoffeeScript files and automatically compile them to JavaScript when it sees changes
 6. Edit the files in the editor of your choice
 7. Run the app directly in your browser by opening the HTML file from your filesystem
 
