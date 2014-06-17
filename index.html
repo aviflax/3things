@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width"/>
     <title>Three Things</title>
-    <script type="text/javascript" charset="utf-8" src="3things.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/index.js"></script>
     <link rel="stylesheet" href="3things.css" charset="utf-8">
   </head>
   <body>
@@ -36,42 +36,25 @@
         <button id="button_dismiss_ie_warning">OK, got it</button>
       </section>
 
-      <details id="secondary_features">
-        <summary>et cetera</summary>
-        <details id="prior">
-          <summary>Prior Things</summary>
-          <section id="data_warning" class="warning">
-            <p>A one-time warning on where your prior things are stored:</p>
-            <p>Three Things runs entirely in your Web browser; it transfers no data to any servers.</p>
-            <p>This means that all your prior things are saved right in your browser — and nowhere else!</p>
-            <p>So if your browser gets reset, or if your device is lost, or your drive dies, then all your prior things will be <strong>gone</strong>.</p>
-            <p>A backup/export feature exists, but you’ll have to remember to use it periodically to save your prior things somewhere else, or you might lose them.</p>
-            <p>Consider yourself warned!</p>
-            <button id="button_dismiss_data_warning">OK, I get it</button>
-          </section>
-          <details>
-              <summary>28 April 2014</summary>
-              ...
-          </details>
-
-          <details>
-              <summary>27 April 2014</summary>
-              ...
-          </details>
+      <details id="prior">
+        <summary>Prior Things</summary>
+        <section id="data_warning" class="warning">
+          <p>A one-time warning on where your prior things are stored:</p>
+          <p>Three Things runs entirely in your Web browser; it transfers no data to any servers.</p>
+          <p>This means that all your prior things are saved right in your browser — and nowhere else!</p>
+          <p>So if your browser gets reset, or if your device is lost, or your drive dies, then all your prior things will be <strong>gone</strong>.</p>
+          <p>A backup/export feature <a href="data.html">exists</a>, but you’ll have to remember to use it periodically to save your prior things somewhere else, or you might lose them.</p>
+          <p>Consider yourself warned!</p>
+          <button id="button_dismiss_data_warning">OK, I get it</button>
+        </section>
+        <details>
+            <summary>28 April 2014</summary>
+            ...
         </details>
 
-        <details id="export">
-            <summary>Backup/Export</summary>
-            <button id="button_export">Backup/Export Everything</button>
-            <textarea id="export_output" required></textarea>
-        </details>
-
-        <details id="import">
-          <summary>Restore/Import</summary>
-          <label>Paste backup/export data here:
-            <textarea id="import_input" required></textarea>
-          </label>
-          <button id="button_import" disabled>Restore/Import Data</button>
+        <details>
+            <summary>27 April 2014</summary>
+            ...
         </details>
       </details>
     </main>
@@ -80,6 +63,7 @@
       <nav>
         <ul>
           <li><a href="help.html">Help</a></li>
+          <li><a href="data.html">Data</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="feedback.html">Feedback</a></li>
           <li><a href="colophon.html">Colophon</a></li>

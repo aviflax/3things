@@ -67,6 +67,7 @@ render_current_thing = (thing, i) ->
   update_checkbox_state checkbox
   return
 
+# TODO: this is duplicated across 3things.coffee and data.coffee
 load_state = (which) ->
   json = localStorage.getItem which
   if json isnt null
@@ -142,42 +143,6 @@ clear_and_render_prior = (prior_state) ->
   d.getElementById('prior').style.display = if not prior_state or prior_state.length is 0 then 'none' else 'block'
   return
 
-handle_export_click = ->
-  output = d.getElementById 'export_output'
-  output.removeChild child for child in to_array output.childNodes
-  data =
-    current: load_state 'current'
-    prior: load_state 'prior'
-  output.value = JSON.stringify data
-  output.select()
-  localStorage.last_warning_or_backup = Date.now()
-  return
-
-handle_import_click = (event) ->
-  prompt_result = prompt 'This will ERASE all existing data! If you wish to proceed then enter “erase” below.'
-  if prompt_result isnt 'erase' then return
-
-  # TODO: add error handling if, say, the value isn’t valid JSON or is missing
-  # the required keys or if their values are the wrong shape
-  textarea = d.getElementById 'import_input'
-  input = JSON.parse textarea.value
-  localStorage.current = JSON.stringify input.current
-  localStorage.prior = JSON.stringify input.prior
-  render_current_state input.current unless input.current is null
-  clear_and_render_prior input.prior
-  textarea.value = ''
-  event.target.disabled = true if event.target
-  alert 'Import/Restore succeeded!'
-  return
-
-toggle_import_button = (event) ->
-  # This is crazy, but it’s necessary and it works
-  # See http://stackoverflow.com/q/14841739
-  setTimeout (()->
-    d.getElementById('button_import').disabled = event.target.value.trim().length is 0
-  ), 1
-  return
-
 interval_check_whether_day_changed = ->
   current_thingset = get_current_thingset_state()
   if current_thingset.date and not is_current_day(current_thingset.date) and not thingset_is_empty(current_thingset)
@@ -242,9 +207,6 @@ d.addEventListener 'DOMContentLoaded', ->
   d.getElementById('button_dismiss_data_warning').addEventListener 'click', dismiss_warning
   d.getElementById('button_dismiss_firefox_warning').addEventListener 'click', dismiss_warning
   d.getElementById('button_dismiss_ie_warning').addEventListener 'click', dismiss_warning
-  d.getElementById('button_export').addEventListener 'click', handle_export_click
-  d.getElementById('import_input').addEventListener 'input', toggle_import_button
-  d.getElementById('button_import').addEventListener 'click', handle_import_click
 
   # Prior state is rendered last because it’s more important to set up interactivity first
   clear_and_render_prior load_state 'prior'

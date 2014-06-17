@@ -36,6 +36,7 @@ ol#today_things, footer ul {
 #today_things {
   font-size: 115%;
   text-align: left;
+  margin-top: 2em;
 }
 
 #today_things li {
@@ -80,7 +81,7 @@ details > details {
   margin-left: 20px;
 }
 
-#secondary_features {
+#prior {
   margin: 80px 0 40px 0;
 }
 
@@ -93,7 +94,11 @@ footer li {
   margin-right: 1em;
 }
 
-#secondary_features textarea {
+.data {
+  margin: 2em 0;
+}
+
+.data textarea {
   display: block;
   width: 100%;
   font-family: monospace;
