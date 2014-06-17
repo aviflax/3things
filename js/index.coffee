@@ -6,7 +6,7 @@ current_iso_date = -> new Date().toISOString()
 get_checkbox = (i) -> d.getElementById input_ids[i] + '_status'
 get_today_thing = (i) -> d.getElementById input_ids[i] + '_text'
 get_today_thingset = -> d.getElementById 'today_things'
-update_today_list_date = -> get_today_thingset().dataset.date = current_iso_date()
+update_today_list_date = -> get_today_thingset().setAttribute 'data-date', current_iso_date()
 
 update_checkbox_state = (checkbox) ->
   text_input = checkbox.nextSibling
@@ -21,21 +21,21 @@ handle_checkbox_change = (event) ->
   update_checkbox_state checkbox
 
   if checkbox.checked
-    checkbox.dataset.dateTimeCompleted = current_iso_date()
+    checkbox.setAttribute 'data-dateTimeCompleted', current_iso_date()
   else
-    delete checkbox.dataset.dateTimeCompleted
+    checkbox.removeAttribute 'data-dateTimeCompleted'
 
   save_current_state()
   return
 
 get_thing_state = (i) ->
   completed: get_checkbox(i).checked
-  date_time_completed: get_checkbox(i).dataset.dateTimeCompleted or null
+  date_time_completed: get_checkbox(i).getAttribute('data-dateTimeCompleted') or null
   text: get_today_thing(i).value.trim()
 
 get_current_thingset_state = ->
   things: (get_thing_state i for i in [0..2])
-  date: get_today_thingset().dataset.date
+  date: get_today_thingset().getAttribute 'data-date'
 
 save_current_state = ->
   current = get_current_thingset_state()
@@ -67,6 +67,7 @@ render_current_thing = (thing, i) ->
   update_checkbox_state checkbox
   return
 
+# TODO: this is duplicated across 3things.coffee and data.coffee
 load_state = (which) ->
   json = localStorage.getItem which
   if json isnt null
@@ -78,7 +79,7 @@ load_state = (which) ->
     null
 
 render_current_state = (state) ->
-  get_today_thingset().dataset.date = state.date
+  get_today_thingset().setAttribute 'data-date', state.date
   render_current_thing thing, i for thing, i in state.things
   return
 
@@ -142,42 +143,6 @@ clear_and_render_prior = (prior_state) ->
   d.getElementById('prior').style.display = if not prior_state or prior_state.length is 0 then 'none' else 'block'
   return
 
-handle_export_click = ->
-  output = d.getElementById 'export_output'
-  output.removeChild child for child in to_array output.childNodes
-  data =
-    current: load_state 'current'
-    prior: load_state 'prior'
-  output.value = JSON.stringify data
-  output.select()
-  localStorage.last_warning_or_backup = Date.now()
-  return
-
-handle_import_click = (event) ->
-  prompt_result = prompt 'This will ERASE all existing data! If you wish to proceed then enter “erase” below.'
-  if prompt_result isnt 'erase' then return
-
-  # TODO: add error handling if, say, the value isn’t valid JSON or is missing
-  # the required keys or if their values are the wrong shape
-  textarea = d.getElementById 'import_input'
-  input = JSON.parse textarea.value
-  localStorage.current = JSON.stringify input.current
-  localStorage.prior = JSON.stringify input.prior
-  render_current_state input.current unless input.current is null
-  clear_and_render_prior input.prior
-  textarea.value = ''
-  event.target.disabled = true if event.target
-  alert 'Import/Restore succeeded!'
-  return
-
-toggle_import_button = (event) ->
-  # This is crazy, but it’s necessary and it works
-  # See http://stackoverflow.com/q/14841739
-  setTimeout (()->
-    d.getElementById('button_import').disabled = event.target.value.trim().length is 0
-  ), 1
-  return
-
 interval_check_whether_day_changed = ->
   current_thingset = get_current_thingset_state()
   if current_thingset.date and not is_current_day(current_thingset.date) and not thingset_is_empty(current_thingset)
@@ -200,9 +165,10 @@ backup_warning_maybe = ->
 
   return
 
-dismiss_warning = ->
-  localStorage.setItem 'warning_dismissed', 'true'
-  d.getElementById('warning').style.display = 'none'
+dismiss_warning = (event) ->
+  storage_key = this.parentNode.id + '_dismissed'
+  localStorage.setItem storage_key, 'true'
+  this.parentNode.style.display = 'none'
   return
 
 resize_all_things = ->
@@ -215,8 +181,13 @@ thingset_is_empty = (thingset) ->
   return things_with_text.length is 0
 
 d.addEventListener 'DOMContentLoaded', ->
-  if localStorage.getItem('warning_dismissed')
-    d.getElementById('warning').style.display = 'none'
+  if localStorage.getItem('data_warning_dismissed') is null
+    d.getElementById('data_warning').style.display = 'block'
+
+  if window.navigator.userAgent.indexOf('Firefox') isnt -1 and localStorage.getItem('firefox_warning_dismissed') is null
+    d.getElementById('firefox_warning').style.display = 'block'
+  if window.navigator.userAgent.indexOf('MSIE') isnt -1 and localStorage.getItem('ie_warning_dismissed') is null
+    d.getElementById('ie_warning').style.display = 'block'
 
   current_state = load_state 'current'
   if not thingset_is_empty(current_state) and not is_current_day(current_state.date)
@@ -233,10 +204,9 @@ d.addEventListener 'DOMContentLoaded', ->
 
   textarea.addEventListener 'input', handle_text_input for textarea in to_array d.getElementsByClassName 'thing_text'
   input.addEventListener 'change', handle_checkbox_change for input in to_array d.getElementsByTagName 'input' when input.type is 'checkbox'
-  d.getElementById('button_dismiss_warning').addEventListener 'click', dismiss_warning
-  d.getElementById('button_export').addEventListener 'click', handle_export_click
-  d.getElementById('import_input').addEventListener 'input', toggle_import_button
-  d.getElementById('button_import').addEventListener 'click', handle_import_click
+  d.getElementById('button_dismiss_data_warning').addEventListener 'click', dismiss_warning
+  d.getElementById('button_dismiss_firefox_warning').addEventListener 'click', dismiss_warning
+  d.getElementById('button_dismiss_ie_warning').addEventListener 'click', dismiss_warning
 
   # Prior state is rendered last because it’s more important to set up interactivity first
   clear_and_render_prior load_state 'prior'

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width"/>
+    <title>Data « “Three Things”</title>
+    <script src="js/data.js"></script>
+    <link rel="stylesheet" href="3things.css" charset="utf-8">
+  </head>
+  <body>
+
+    <header>
+      <h1>Data « “Three Things”</h1>
+    </header>
+
+    <details id="export" class="data">
+        <summary>Backup/Export</summary>
+        <button id="button_export">Backup/Export Everything</button>
+        <textarea id="export_output" required></textarea>
+    </details>
+
+    <details id="import" class="data">
+      <summary>Restore/Import</summary>
+      <label>Paste backup/export data here:
+        <textarea id="import_input" required></textarea>
+      </label>
+      <button id="button_import" disabled>Restore/Import Data</button>
+    </details>
+
+    <nav><a href="/">Back to Three Things</a></nav>
+  </body>
+</html>
