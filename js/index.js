@@ -134,6 +134,7 @@
     var checkbox;
     checkbox = get_checkbox(i);
     checkbox.checked = false;
+    update_checkbox_state(checkbox);
     get_today_thing(i).value = '';
   };
 

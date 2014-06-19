@@ -86,6 +86,7 @@ render_current_state = (state) ->
 reset_thing = (i) ->
   checkbox = get_checkbox i
   checkbox.checked = false
+  update_checkbox_state checkbox
   get_today_thing(i).value = ''
   return
 
