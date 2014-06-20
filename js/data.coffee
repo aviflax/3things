@@ -43,11 +43,19 @@ toggle_import_button = (event) ->
   # This is crazy, but it’s necessary and it works
   # See http://stackoverflow.com/q/14841739
   setTimeout (()->
-    d.getElementById('button_import').disabled = event.target.value.trim().length is 0
+    d.getElementById('import_button').disabled = event.target.value.trim().length is 0
   ), 1
+  return
+
+handle_delete_click = () ->
+  prompt_result = prompt 'This will ERASE all existing data! If you wish to proceed then enter “erase” below.'
+  if prompt_result isnt 'erase' then return
+  localStorage.clear()
+  alert 'All data deleted.'
   return
 
 d.addEventListener 'DOMContentLoaded', ->
   d.getElementById('export').addEventListener 'click', export_data
   d.getElementById('import_input').addEventListener 'input', toggle_import_button
-  d.getElementById('button_import').addEventListener 'click', handle_import_click
+  d.getElementById('import_button').addEventListener 'click', handle_import_click
+  d.getElementById('delete_button').addEventListener 'click', handle_delete_click
