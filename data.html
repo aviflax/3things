@@ -15,16 +15,18 @@
 
     <details id="export" class="data">
         <summary>Backup/Export</summary>
-        <button id="button_export">Backup/Export Everything</button>
-        <textarea id="export_output" required></textarea>
+        <label>
+          Copy the data below to your clipboard then paste it somewhere safe.
+        </label>
+        <textarea id="export_output" readonly></textarea>
     </details>
 
     <details id="import" class="data">
       <summary>Restore/Import</summary>
       <label>Paste backup/export data here:
-        <textarea id="import_input" required></textarea>
+        <textarea id="import_input" placeholder="Paste here!"></textarea>
       </label>
-      <button id="button_import" disabled>Restore/Import Data</button>
+      <label>Then click this: <button id="button_import" disabled>Restore/Import Data</button></label>
     </details>
 
     <nav><a href="/">Back to Three Things</a></nav>

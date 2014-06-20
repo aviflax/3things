@@ -12,15 +12,16 @@ load_state = (which) ->
     console.log 'state', which, 'not present in localStorage'
     null
 
-handle_export_click = ->
+export_data = ->
   output = d.getElementById 'export_output'
-  output.removeChild child for child in to_array output.childNodes
-  data =
-    current: load_state 'current'
-    prior: load_state 'prior'
-  output.value = JSON.stringify data
-  output.select()
-  localStorage.last_warning_or_backup = Date.now()
+  if output.value.trim() is ''
+    output.removeChild child for child in to_array output.childNodes
+    data =
+      current: load_state 'current'
+      prior: load_state 'prior'
+    output.value = JSON.stringify data
+    setTimeout (()->output.select()), 10
+    localStorage.last_warning_or_backup = Date.now()
   return
 
 handle_import_click = (event) ->
@@ -33,7 +34,6 @@ handle_import_click = (event) ->
   input = JSON.parse textarea.value
   localStorage.current = JSON.stringify input.current
   localStorage.prior = JSON.stringify input.prior
-  render_current_state input.current unless input.current is null
   textarea.value = ''
   event.target.disabled = true if event.target
   alert 'Import/Restore succeeded! Go back to Three Things to see the results.'
@@ -48,6 +48,6 @@ toggle_import_button = (event) ->
   return
 
 d.addEventListener 'DOMContentLoaded', ->
-  d.getElementById('button_export').addEventListener 'click', handle_export_click
+  d.getElementById('export').addEventListener 'click', export_data
   d.getElementById('import_input').addEventListener 'input', toggle_import_button
   d.getElementById('button_import').addEventListener 'click', handle_import_click
