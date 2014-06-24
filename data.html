@@ -15,10 +15,16 @@
 
     <details id="export" class="data">
         <summary>Backup/Export</summary>
-        <label>
-          Copy the data below to your clipboard then paste it somewhere safe.
-        </label>
-        <textarea id="export_output" readonly></textarea>
+        <details id="export_plaintext">
+          <summary>Plain Text</summary>
+          <label>Copy the data below to your clipboard then paste it somewhere safe.</label>
+          <textarea id="export_output" readonly></textarea>
+        </details>
+        <details id="export_file">
+          <summary>Save a file</summary>
+          <label class="safari ie help">If you’re using Safari or Internet Explorer then when you click the below link you may be taken to a page containing the backup/export data. If so, just use your browser’s “Save” feature to save the data to a local file.</label>
+          <a id="save_export" download="Three Things Export (Backup).json">Save a file</a>
+        </details>
     </details>
 
     <details id="import" class="data">

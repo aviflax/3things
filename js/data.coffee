@@ -12,17 +12,31 @@ load_state = (which) ->
     console.log 'state', which, 'not present in localStorage'
     null
 
-export_data = ->
+export_data_json = ->
+  data =
+    current: load_state 'current'
+    prior: load_state 'prior'
+  JSON.stringify data
+
+export_data_plaintext = ->
   output = d.getElementById 'export_output'
   if output.value.trim() is ''
     output.removeChild child for child in to_array output.childNodes
-    data =
-      current: load_state 'current'
-      prior: load_state 'prior'
-    output.value = JSON.stringify data
+    output.value = export_data_json()
     setTimeout (()->output.select()), 10
     localStorage.last_warning_or_backup = Date.now()
   return
+
+create_blob = ->
+  new Blob [export_data_json()], {'type': 'application/json'}
+
+export_data_file = ->
+  a = d.getElementById 'save_export'
+  a.download = "Three Things Export (Backup) of " + new Date().toISOString() + ".json"
+  # This initially used a Data URI but that caused Chrome to ignore the value of the
+  # download attribute and just save the file as download.json. For whatever reason,
+  # using a blob URL ameliorates that issue.
+  a.href = URL.createObjectURL create_blob()
 
 handle_import_click = (event) ->
   prompt_result = prompt 'This will ERASE all existing data! If you wish to proceed then enter “erase” below.'
@@ -55,7 +69,12 @@ handle_delete_click = () ->
   return
 
 d.addEventListener 'DOMContentLoaded', ->
-  d.getElementById('export').addEventListener 'click', export_data
+
+  # These two listeners should ideally be listening for the `toggle` event but that doesn’t seem to work
+  # in any browsers right now
+  d.getElementById('export_plaintext').addEventListener 'click', export_data_plaintext
+  d.getElementById('export_file').addEventListener 'click', export_data_file
+
   d.getElementById('import_input').addEventListener 'input', toggle_import_button
   d.getElementById('import_button').addEventListener 'click', handle_import_click
   d.getElementById('delete_button').addEventListener 'click', handle_delete_click

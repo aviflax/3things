@@ -28,6 +28,12 @@ p {
   padding: 0;
 }
 
+label.help {
+  display: block;
+  font-size: smaller;
+  margin: 5px 0;
+}
+
 ol#today_things, footer ul {
   list-style: none;
   padding: 0;
