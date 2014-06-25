@@ -80,6 +80,16 @@ handle_delete_click = () ->
   alert 'All data deleted.'
   return
 
+unhide = (browser_identifier, class_name) ->
+  if window.navigator.userAgent.indexOf(browser_identifier) isnt -1
+    e.style.display = 'block' for e in to_array d.getElementsByClassName class_name
+  return
+
+unhide_safari = ->
+  if window.navigator.userAgent.indexOf('Safari') isnt -1 and window.navigator.userAgent.indexOf('Chrome') is -1
+    e.style.display = 'block' for e in to_array d.getElementsByClassName 'safari'
+  return
+
 d.addEventListener 'DOMContentLoaded', ->
 
   # These two listeners should ideally be listening for the `toggle` event but that doesn’t seem to work
@@ -91,3 +101,6 @@ d.addEventListener 'DOMContentLoaded', ->
   d.getElementById('import_button').addEventListener 'click', handle_import_click
   d.getElementById('import_file').addEventListener 'change', import_file
   d.getElementById('delete_button').addEventListener 'click', handle_delete_click
+
+  unhide 'MSIE', 'ie'
+  unhide_safari()

@@ -28,10 +28,15 @@ p {
   padding: 0;
 }
 
-label.help {
+.help {
   display: block;
   font-size: smaller;
   margin: 5px 0;
+}
+
+.safari, .ie, .firefox, .chrome {
+  /* These elements will be displayed programmatically by scripts based on user agent. */
+  display: none;
 }
 
 ol#today_things, footer ul {
