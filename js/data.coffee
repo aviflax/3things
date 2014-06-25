@@ -38,6 +38,12 @@ export_data_file = ->
   # using a blob URL ameliorates that issue.
   a.href = URL.createObjectURL create_blob()
 
+do_import = (json_string) ->
+  input = JSON.parse json_string
+  localStorage.current = JSON.stringify input.current
+  localStorage.prior = JSON.stringify input.prior
+  return
+
 handle_import_click = (event) ->
   prompt_result = prompt 'This will ERASE all existing data! If you wish to proceed then enter “erase” below.'
   if prompt_result isnt 'erase' then return
@@ -45,9 +51,7 @@ handle_import_click = (event) ->
   # TODO: add error handling if, say, the value isn’t valid JSON or is missing
   # the required keys or if their values are the wrong shape
   textarea = d.getElementById 'import_input'
-  input = JSON.parse textarea.value
-  localStorage.current = JSON.stringify input.current
-  localStorage.prior = JSON.stringify input.prior
+  do_import textarea.value
   textarea.value = ''
   event.target.disabled = true if event.target
   alert 'Import/Restore succeeded! Go back to Three Things to see the results.'
@@ -59,6 +63,14 @@ toggle_import_button = (event) ->
   setTimeout (()->
     d.getElementById('import_button').disabled = event.target.value.trim().length is 0
   ), 1
+  return
+
+import_file = (event) ->
+  fr = new FileReader()
+  fr.addEventListener 'load', ->
+    do_import fr.result
+    alert 'Import/Restore succeeded! Go back to Three Things to see the results.'
+  fr.readAsText this.files[0]
   return
 
 handle_delete_click = () ->
@@ -77,4 +89,5 @@ d.addEventListener 'DOMContentLoaded', ->
 
   d.getElementById('import_input').addEventListener 'input', toggle_import_button
   d.getElementById('import_button').addEventListener 'click', handle_import_click
+  d.getElementById('import_file').addEventListener 'change', import_file
   d.getElementById('delete_button').addEventListener 'click', handle_delete_click

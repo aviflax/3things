@@ -15,13 +15,15 @@
 
     <details id="export" class="data">
         <summary>Backup/Export</summary>
+
         <details id="export_plaintext">
-          <summary>Plain Text</summary>
+          <summary>To Plain Text</summary>
           <label>Copy the data below to your clipboard then paste it somewhere safe.</label>
           <textarea id="export_output" readonly></textarea>
         </details>
+
         <details id="export_file">
-          <summary>Save a file</summary>
+          <summary>To a File</summary>
           <label class="safari ie help">If you’re using Safari or Internet Explorer then when you click the below link you may be taken to a page containing the backup/export data. If so, just use your browser’s “Save” feature to save the data to a local file.</label>
           <a id="save_export" download="Three Things Export (Backup).json">Save a file</a>
         </details>
@@ -29,10 +31,19 @@
 
     <details id="import" class="data">
       <summary>Restore/Import</summary>
-      <label>Paste backup/export data here:
-        <textarea id="import_input" placeholder="Paste here!"></textarea>
-      </label>
-      <label>Then click this: <button id="import_button" disabled>Restore/Import Data</button></label>
+
+      <details>
+        <summary>From Plain Text</summary>
+        <label>Paste backup/export data here:
+          <textarea id="import_input" placeholder="Paste here!"></textarea>
+        </label>
+        <label>Then click this: <button id="import_button" disabled>Restore/Import Data</button></label>
+      </details>
+
+      <details>
+        <summary>From a File</summary>
+        <input id="import_file" type="file" accept="application/json,.json"/>
+      </details>
     </details>
 
     <details id="delete" class="data">
