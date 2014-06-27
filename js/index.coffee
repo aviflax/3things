@@ -8,6 +8,15 @@ get_today_thing = (i) -> d.getElementById input_ids[i] + '_text'
 get_today_thingset = -> d.getElementById 'today_things'
 update_today_list_date = -> get_today_thingset().setAttribute 'data-date', current_iso_date()
 
+Array::group_by = (f) ->
+  # A naïve port of Clojure’s group-by — thanks, Rich Hickey!
+	@reduce (r,x) ->
+		k = f x
+		r[k] = r[k] or []
+		r[k].push x
+		r
+	, {}
+
 update_checkbox_state = (checkbox) ->
   text_input = checkbox.nextSibling
   if checkbox.checked
@@ -112,8 +121,7 @@ prior_thing_to_li = (thing) ->
   li.appendChild d.createTextNode thing.text
   li
 
-render_prior_thingset = (thingset) ->
-  prior = d.getElementById 'prior'
+render_prior_thingset = (thingset, parent) ->
   details = d.createElement 'details'
   summary = d.createElement 'summary'
   list = d.createElement 'ul'
@@ -121,7 +129,7 @@ render_prior_thingset = (thingset) ->
   details.appendChild summary
   details.appendChild list
   list.appendChild prior_thing_to_li thing for thing in thingset.things
-  prior.appendChild details
+  parent.appendChild details
   return
 
 clear_prior_things = ->
@@ -129,9 +137,28 @@ clear_prior_things = ->
   details.removeChild child for child in to_array details.getElementsByTagName 'details'
   return
 
-render_prior_things = (prior_things) ->
-  render_prior_thingset thingset for thingset in prior_things.sort (a, b) ->
+render_group_of_prior_thingsets = (month, thingsets) ->
+  prior = d.getElementById 'prior'
+  details = d.createElement 'details'
+  summary = d.createElement 'summary'
+  summary.appendChild d.createTextNode month
+  details.appendChild summary
+  render_prior_thingset thingset, details for thingset in thingsets
+  prior.appendChild details
+  return
+
+render_prior_things = (prior_thingsets) ->
+  sorted_thingsets = prior_thingsets.sort (a, b) ->
     if a.date < b.date then 1 else if a.date > b.date then -1 else 0
+
+  months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+  grouped_thingsets = sorted_thingsets.group_by (thingset) ->
+    date = new Date(thingset.date)
+    months[date.getMonth()] + ' ' + date.getFullYear()
+
+  render_group_of_prior_thingsets month, things for month, things of grouped_thingsets
+
   return
 
 is_current_day = (date) ->
