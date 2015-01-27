@@ -245,7 +245,7 @@
     var today, value;
     value = date instanceof Date ? date : new Date(date);
     today = new Date();
-    return today.getDay() === value.getDay() && today.getMonth() === value.getMonth() && today.getYear() === value.getYear();
+    return today.getDate() === value.getDate() && today.getMonth() === value.getMonth() && today.getYear() === value.getYear();
   };
 
   clear_and_render_prior = function(prior_state) {

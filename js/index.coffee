@@ -164,7 +164,7 @@ render_prior_things = (prior_thingsets) ->
 is_current_day = (date) ->
   value = if date instanceof Date then date else new Date date
   today = new Date()
-  return today.getDay() is value.getDay() and today.getMonth() is value.getMonth() and today.getYear() is value.getYear()
+  return today.getDate() is value.getDate() and today.getMonth() is value.getMonth() and today.getYear() is value.getYear()
 
 clear_and_render_prior = (prior_state) ->
   clear_prior_things()
